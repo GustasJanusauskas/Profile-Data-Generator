@@ -13,11 +13,12 @@ namespace socialmediadatagenerator
 
         public string firstName;
         public string lastName;
+        public string gender;
         public string description;
 
         public string profileImagePath;
 
-        public Identity(string u,string f = "",string l = "") {
+        public Identity(string u = "",string f = "",string l = "") {
             userName = u;
             firstName = f;
             lastName = l;

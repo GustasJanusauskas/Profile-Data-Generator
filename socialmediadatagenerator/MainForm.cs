@@ -13,8 +13,11 @@ namespace socialmediadatagenerator
 {
     public partial class MainForm : Form
     {
-        int facesCount = 0;
         List<Identity> generatedUsers = new List<Identity>();
+        Dictionary<string,List<string>> nameLists = new Dictionary<string, List<string>>();
+
+        Random random = new Random();
+        int facesCount = 0;
 
         public MainForm()
         {
@@ -25,8 +28,13 @@ namespace socialmediadatagenerator
         private void Init() {
             if (!Directory.Exists("profile_images")) return;
 
+            //Count already generated faces so we can use them later
             facesCount = Directory.GetFiles("profile_images\\").Length;
-            
+
+            string defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "..\\..\\..\\..\\defaultdata");
+            openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
+            openFileDialog1.InitialDirectory = defaultDataDir;
+
             previewListView.View = View.Details;
             previewListView.FullRowSelect = true;
             previewListView.GridLines = true;
@@ -40,9 +48,27 @@ namespace socialmediadatagenerator
             previewListView.Columns.Add("Description length");
             previewListView.Columns.Add("Profile image");
 
-            generatedUsers.Add(new Identity("user1", "first1", "last2"));
-            generatedUsers.Add(new Identity("user2", "first1", "last2"));
+            //Read default namelists
+            foreach (var file in Directory.GetFiles(defaultDataDir)) {
+                ReadNameList(File.ReadAllText(file), Path.GetFileName(file).Replace(".txt", ""));
+            }
             UpdatePreviewList();
+        }
+
+        private Identity GenerateIdentity() {
+            Identity result = new Identity();
+
+            result.email = GenerateName(NameType.Email);
+            result.userName = GenerateName(NameType.Username);
+            result.password = GenerateName(NameType.Password);
+
+            result.gender = random.Next(0, 2) == 0 ? "male" : "female";
+            result.firstName = nameLists[result.gender + "firstname"][random.Next(0, nameLists[result.gender + "firstname"].Count)];
+            result.lastName = nameLists["lastname"][random.Next(0, nameLists["lastname"].Count)];
+
+            result.profileImagePath = Directory.GetFiles("profile_images\\")[random.Next(0,facesCount)];
+
+            return result;
         }
 
         private void UpdatePreviewList() {
@@ -66,6 +92,66 @@ namespace socialmediadatagenerator
             }
         }
 
+        //Manual read
+        private void ReadNameList(Stream nameList, string category) {
+            if (!nameLists.ContainsKey(category)) nameLists.Add(category,new List<string>());
+
+            string tempStr;
+            using (StreamReader streamReader = new StreamReader(nameList)) {
+                tempStr = streamReader.ReadToEnd();
+            }
+            //Assume .txt files are newline separated
+            if (openFileDialog1.FileName.Contains(".txt")) {
+                nameLists[category] = tempStr.Split('\n').ToList();
+            }
+            //Comma separated values
+            else if (openFileDialog1.FileName.Contains(".csv")) {
+                nameLists[category] = tempStr.Split(',').ToList();
+            }
+        }
+
+        //For automatic namelists
+        private void ReadNameList(string nameList, string category) {
+            if (!nameLists.ContainsKey(category)) nameLists.Add(category, new List<string>());
+
+            //Comma separated values
+            if (openFileDialog1.FileName.Contains(',')) {
+                nameLists[category] = nameList.Split(',').ToList();
+            }
+            //Assume .txt files are newline separated
+            else {
+                nameLists[category] = nameList.Split('\n').ToList();
+            }
+        }
+
+        enum NameType {
+            Username, Email, Password
+        }
+        private string GenerateName(NameType nameType) {
+            string result = "";
+
+            if (nameType == NameType.Email || nameType == NameType.Username) {
+                result += nameLists["adjective"][random.Next(0, nameLists["adjective"].Count)];
+                result += nameLists["object"][random.Next(0, nameLists["object"].Count)];
+                for (int i = 0; i < random.Next(0, 6); i++) {
+                    result += random.Next(0, 10);
+                }
+
+                if (nameType == NameType.Email) result += random.Next(0, 2) == 0 ? "@hotmail.com" : "@gmail.com";
+            }
+            else if (nameType == NameType.Password) {
+                for (int i = 0; i < random.Next(1, 3); i++) {
+                    result += nameLists["object"][random.Next(0, nameLists["object"].Count)];
+                }
+
+                for (int i = 0; i < random.Next(0, 6); i++) {
+                    result += random.Next(0, 10);
+                }
+            }
+
+            return result;
+        }
+
         private void generateFacesBtn_Click(object sender, EventArgs e) {
             int times = (int)facesNumeric.Value;
             facesBar.Value = 0;
@@ -87,8 +173,56 @@ namespace socialmediadatagenerator
             });
         }
 
-        private void previewListBox_SelectedIndexChanged(object sender, EventArgs e) {
+        private void nameListBtn_Click(object sender, EventArgs e) {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
+                ReadNameList(openFileDialog1.OpenFile(),"malefirstname");
+            }
+        }
 
+        private void nameListFemaleBtn_Click(object sender, EventArgs e) {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
+                ReadNameList(openFileDialog1.OpenFile(), "femalefirstname");
+            }
+        }
+
+        private void lastNameListBtn_Click(object sender, EventArgs e) {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
+                ReadNameList(openFileDialog1.OpenFile(), "lastname");
+            }
+        }
+
+        private void emailListBtn_Click(object sender, EventArgs e) {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
+                ReadNameList(openFileDialog1.OpenFile(), "email");
+            }
+        }
+
+        private void UsernameListBtn_Click(object sender, EventArgs e) {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
+                ReadNameList(openFileDialog1.OpenFile(), "username");
+            }
+        }
+
+        private void generateEmailsCheckbox_CheckedChanged(object sender, EventArgs e) {
+            emailListBtn.Enabled = !generateEmailsCheckbox.Checked;
+        }
+
+        private void generateUsernamesCheckbox_CheckedChanged(object sender, EventArgs e) {
+            UsernameListBtn.Enabled = !generateUsernamesCheckbox.Checked;
+        }
+
+        private void customNamelistsCheckbox_CheckedChanged(object sender, EventArgs e) {
+            nameListBtn.Enabled = customNamelistsCheckbox.Checked;
+            nameListFemaleBtn.Enabled = customNamelistsCheckbox.Checked;
+            lastNameListBtn.Enabled = customNamelistsCheckbox.Checked;
+        }
+
+        private void button2_Click(object sender, EventArgs e) {
+            int total = (int)generateNumeric.Value;
+            for (int i = 0; i < total; i++) {
+                generatedUsers.Add(GenerateIdentity());
+            }
+            UpdatePreviewList();
         }
     }
 }
