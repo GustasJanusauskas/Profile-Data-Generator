@@ -36,8 +36,15 @@ namespace socialmediadatagenerator
             this.nameBox = new System.Windows.Forms.GroupBox();
             this.previewBox = new System.Windows.Forms.GroupBox();
             this.previewListView = new System.Windows.Forms.ListView();
+            this.useCustomNameListsCheckbox = new System.Windows.Forms.CheckBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.nameListBtn = new System.Windows.Forms.Button();
+            this.lastNameListBtn = new System.Windows.Forms.Button();
+            this.emailListBtn = new System.Windows.Forms.Button();
+            this.UsernameListBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
+            this.nameBox.SuspendLayout();
             this.previewBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,9 +101,14 @@ namespace socialmediadatagenerator
             // 
             // nameBox
             // 
+            this.nameBox.Controls.Add(this.UsernameListBtn);
+            this.nameBox.Controls.Add(this.emailListBtn);
+            this.nameBox.Controls.Add(this.lastNameListBtn);
+            this.nameBox.Controls.Add(this.nameListBtn);
+            this.nameBox.Controls.Add(this.useCustomNameListsCheckbox);
             this.nameBox.Location = new System.Drawing.Point(12, 100);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(188, 224);
+            this.nameBox.Size = new System.Drawing.Size(144, 162);
             this.nameBox.TabIndex = 4;
             this.nameBox.TabStop = false;
             this.nameBox.Text = "Names";
@@ -121,6 +133,56 @@ namespace socialmediadatagenerator
             this.previewListView.TabIndex = 12;
             this.previewListView.UseCompatibleStateImageBehavior = false;
             // 
+            // useCustomNameListsCheckbox
+            // 
+            this.useCustomNameListsCheckbox.AutoSize = true;
+            this.useCustomNameListsCheckbox.Location = new System.Drawing.Point(6, 19);
+            this.useCustomNameListsCheckbox.Name = "useCustomNameListsCheckbox";
+            this.useCustomNameListsCheckbox.Size = new System.Drawing.Size(131, 17);
+            this.useCustomNameListsCheckbox.TabIndex = 6;
+            this.useCustomNameListsCheckbox.Text = "Use custom name lists";
+            this.useCustomNameListsCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // nameListBtn
+            // 
+            this.nameListBtn.Location = new System.Drawing.Point(6, 42);
+            this.nameListBtn.Name = "nameListBtn";
+            this.nameListBtn.Size = new System.Drawing.Size(131, 23);
+            this.nameListBtn.TabIndex = 6;
+            this.nameListBtn.Text = "Select first name list";
+            this.nameListBtn.UseVisualStyleBackColor = true;
+            // 
+            // lastNameListBtn
+            // 
+            this.lastNameListBtn.Location = new System.Drawing.Point(6, 71);
+            this.lastNameListBtn.Name = "lastNameListBtn";
+            this.lastNameListBtn.Size = new System.Drawing.Size(131, 23);
+            this.lastNameListBtn.TabIndex = 7;
+            this.lastNameListBtn.Text = "Select last name list";
+            this.lastNameListBtn.UseVisualStyleBackColor = true;
+            // 
+            // emailListBtn
+            // 
+            this.emailListBtn.Location = new System.Drawing.Point(6, 100);
+            this.emailListBtn.Name = "emailListBtn";
+            this.emailListBtn.Size = new System.Drawing.Size(131, 23);
+            this.emailListBtn.TabIndex = 8;
+            this.emailListBtn.Text = "Select email list";
+            this.emailListBtn.UseVisualStyleBackColor = true;
+            // 
+            // UsernameListBtn
+            // 
+            this.UsernameListBtn.Location = new System.Drawing.Point(6, 129);
+            this.UsernameListBtn.Name = "UsernameListBtn";
+            this.UsernameListBtn.Size = new System.Drawing.Size(131, 23);
+            this.UsernameListBtn.TabIndex = 9;
+            this.UsernameListBtn.Text = "Select username list";
+            this.UsernameListBtn.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -134,6 +196,8 @@ namespace socialmediadatagenerator
             this.Text = "Social Media Site Data Generator";
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).EndInit();
             this.faceGroup.ResumeLayout(false);
+            this.nameBox.ResumeLayout(false);
+            this.nameBox.PerformLayout();
             this.previewBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -148,6 +212,12 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.GroupBox nameBox;
         private System.Windows.Forms.GroupBox previewBox;
         private System.Windows.Forms.ListView previewListView;
+        private System.Windows.Forms.Button emailListBtn;
+        private System.Windows.Forms.Button lastNameListBtn;
+        private System.Windows.Forms.Button nameListBtn;
+        private System.Windows.Forms.CheckBox useCustomNameListsCheckbox;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button UsernameListBtn;
     }
 }
 
