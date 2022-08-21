@@ -34,8 +34,11 @@ namespace socialmediadatagenerator
             this.facesNumeric = new System.Windows.Forms.NumericUpDown();
             this.faceGroup = new System.Windows.Forms.GroupBox();
             this.nameBox = new System.Windows.Forms.GroupBox();
+            this.previewBox = new System.Windows.Forms.GroupBox();
+            this.previewListView = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
+            this.previewBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // generateFacesBtn
@@ -98,11 +101,32 @@ namespace socialmediadatagenerator
             this.nameBox.TabStop = false;
             this.nameBox.Text = "Names";
             // 
+            // previewBox
+            // 
+            this.previewBox.Controls.Add(this.previewListView);
+            this.previewBox.Location = new System.Drawing.Point(418, 12);
+            this.previewBox.Name = "previewBox";
+            this.previewBox.Size = new System.Drawing.Size(318, 312);
+            this.previewBox.TabIndex = 5;
+            this.previewBox.TabStop = false;
+            this.previewBox.Text = "Preview";
+            // 
+            // previewListView
+            // 
+            this.previewListView.HideSelection = false;
+            this.previewListView.Location = new System.Drawing.Point(6, 19);
+            this.previewListView.MultiSelect = false;
+            this.previewListView.Name = "previewListView";
+            this.previewListView.Size = new System.Drawing.Size(306, 287);
+            this.previewListView.TabIndex = 12;
+            this.previewListView.UseCompatibleStateImageBehavior = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(605, 336);
+            this.ClientSize = new System.Drawing.Size(748, 336);
+            this.Controls.Add(this.previewBox);
             this.Controls.Add(this.nameBox);
             this.Controls.Add(this.faceGroup);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -110,6 +134,7 @@ namespace socialmediadatagenerator
             this.Text = "Social Media Site Data Generator";
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).EndInit();
             this.faceGroup.ResumeLayout(false);
+            this.previewBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -121,6 +146,8 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.NumericUpDown facesNumeric;
         private System.Windows.Forms.GroupBox faceGroup;
         private System.Windows.Forms.GroupBox nameBox;
+        private System.Windows.Forms.GroupBox previewBox;
+        private System.Windows.Forms.ListView previewListView;
     }
 }
 
