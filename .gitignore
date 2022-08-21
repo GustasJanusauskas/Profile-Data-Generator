@@ -1,0 +1,19 @@
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+#Builds
+socialmediadatagenerator/bin/*
+socialmediadatagenerator/obj/*
+
+#Visual Studio
+socialmediadatagenerator/.vs/*
+
+# System files
+.DS_Store
+Thumbs.db
