@@ -59,8 +59,8 @@ namespace socialmediadatagenerator
         private async Task<Identity> GenerateIdentity() {
             Identity result = new Identity();
 
-            result.email = GenerateName(NameType.Email);
-            result.userName = GenerateName(NameType.Username);
+            result.email = generateEmailsCheckbox.Checked ? GenerateName(NameType.Email) : nameLists["email"][random.Next(0, nameLists["email"].Count)];
+            result.userName = generateUsernamesCheckbox.Checked ? GenerateName(NameType.Username) : nameLists["username"][random.Next(0, nameLists["username"].Count)];
             result.password = GenerateName(NameType.Password);
 
             result.gender = random.Next(0, 2) == 0 ? "male" : "female";

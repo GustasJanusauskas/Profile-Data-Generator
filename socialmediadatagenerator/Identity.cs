@@ -14,9 +14,12 @@ namespace socialmediadatagenerator
         public string firstName;
         public string lastName;
         public string gender;
-        public string description;
 
+        public string description;
         public string profileImagePath;
+
+        public string[] posts;
+        public string[] imagesToUpload;
 
         public Identity(string u = "",string f = "",string l = "") {
             userName = u;
