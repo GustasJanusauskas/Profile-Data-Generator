@@ -48,12 +48,17 @@ namespace socialmediadatagenerator
             this.generationGroup = new System.Windows.Forms.GroupBox();
             this.generateBtn = new System.Windows.Forms.Button();
             this.generateNumeric = new System.Windows.Forms.NumericUpDown();
+            this.tokenBox = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tokenGroup = new System.Windows.Forms.GroupBox();
+            this.generateBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
             this.nameBox.SuspendLayout();
             this.previewBox.SuspendLayout();
             this.generationGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.generateNumeric)).BeginInit();
+            this.tokenGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // generateFacesBtn
@@ -242,6 +247,8 @@ namespace socialmediadatagenerator
             // 
             // generationGroup
             // 
+            this.generationGroup.Controls.Add(this.generateBar);
+            this.generationGroup.Controls.Add(this.groupBox1);
             this.generationGroup.Controls.Add(this.generateBtn);
             this.generationGroup.Controls.Add(this.generateNumeric);
             this.generationGroup.Location = new System.Drawing.Point(206, 12);
@@ -283,11 +290,45 @@ namespace socialmediadatagenerator
             0,
             0});
             // 
+            // tokenBox
+            // 
+            this.tokenBox.Location = new System.Drawing.Point(6, 19);
+            this.tokenBox.Name = "tokenBox";
+            this.tokenBox.Size = new System.Drawing.Size(194, 20);
+            this.tokenBox.TabIndex = 6;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(135, 303);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(219, 98);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Preview";
+            // 
+            // tokenGroup
+            // 
+            this.tokenGroup.Controls.Add(this.tokenBox);
+            this.tokenGroup.Location = new System.Drawing.Point(206, 307);
+            this.tokenGroup.Name = "tokenGroup";
+            this.tokenGroup.Size = new System.Drawing.Size(206, 46);
+            this.tokenGroup.TabIndex = 14;
+            this.tokenGroup.TabStop = false;
+            this.tokenGroup.Text = "OpenAI token";
+            // 
+            // generateBar
+            // 
+            this.generateBar.Location = new System.Drawing.Point(6, 48);
+            this.generateBar.Name = "generateBar";
+            this.generateBar.Size = new System.Drawing.Size(194, 23);
+            this.generateBar.TabIndex = 3;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(748, 365);
+            this.Controls.Add(this.tokenGroup);
             this.Controls.Add(this.generationGroup);
             this.Controls.Add(this.previewBox);
             this.Controls.Add(this.nameBox);
@@ -302,6 +343,8 @@ namespace socialmediadatagenerator
             this.previewBox.ResumeLayout(false);
             this.generationGroup.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.generateNumeric)).EndInit();
+            this.tokenGroup.ResumeLayout(false);
+            this.tokenGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -327,6 +370,10 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.GroupBox generationGroup;
         private System.Windows.Forms.Button generateBtn;
         private System.Windows.Forms.NumericUpDown generateNumeric;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox tokenBox;
+        private System.Windows.Forms.GroupBox tokenGroup;
+        private System.Windows.Forms.ProgressBar generateBar;
     }
 }
 

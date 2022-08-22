@@ -15,6 +15,7 @@ namespace socialmediadatagenerator
     {
         List<Identity> generatedUsers = new List<Identity>();
         Dictionary<string,List<string>> nameLists = new Dictionary<string, List<string>>();
+        String[] descriptionPrompts = { "I am", "I like", "I hate", "Why do", "I love" };
 
         Random random = new Random();
         int facesCount = 0;
@@ -55,7 +56,7 @@ namespace socialmediadatagenerator
             UpdatePreviewList();
         }
 
-        private Identity GenerateIdentity() {
+        private async Task<Identity> GenerateIdentity() {
             Identity result = new Identity();
 
             result.email = GenerateName(NameType.Email);
@@ -67,6 +68,37 @@ namespace socialmediadatagenerator
             result.lastName = nameLists["lastname"][random.Next(0, nameLists["lastname"].Count)];
 
             result.profileImagePath = Directory.GetFiles("profile_images\\")[random.Next(0,facesCount)];
+            //Get ML description
+            var descTask = RequestsAPI.GetOpenAIResponse(descriptionPrompts[random.Next(0,descriptionPrompts.Length)],tokenBox.Text);
+            result.description = await descTask;
+
+            return result;
+        }
+        
+        enum NameType {
+            Username, Email, Password
+        }
+        private string GenerateName(NameType nameType) {
+            string result = "";
+
+            if (nameType == NameType.Email || nameType == NameType.Username) {
+                result += nameLists["adjective"][random.Next(0, nameLists["adjective"].Count)];
+                result += nameLists["object"][random.Next(0, nameLists["object"].Count)];
+                for (int i = 0; i < random.Next(0, 6); i++) {
+                    result += random.Next(0, 10);
+                }
+
+                if (nameType == NameType.Email) result += random.Next(0, 2) == 0 ? "@hotmail.com" : "@gmail.com";
+            }
+            else if (nameType == NameType.Password) {
+                for (int i = 0; i < random.Next(1, 3); i++) {
+                    result += nameLists["object"][random.Next(0, nameLists["object"].Count)];
+                }
+
+                for (int i = 0; i < random.Next(0, 6); i++) {
+                    result += random.Next(0, 10);
+                }
+            }
 
             return result;
         }
@@ -124,34 +156,6 @@ namespace socialmediadatagenerator
             }
         }
 
-        enum NameType {
-            Username, Email, Password
-        }
-        private string GenerateName(NameType nameType) {
-            string result = "";
-
-            if (nameType == NameType.Email || nameType == NameType.Username) {
-                result += nameLists["adjective"][random.Next(0, nameLists["adjective"].Count)];
-                result += nameLists["object"][random.Next(0, nameLists["object"].Count)];
-                for (int i = 0; i < random.Next(0, 6); i++) {
-                    result += random.Next(0, 10);
-                }
-
-                if (nameType == NameType.Email) result += random.Next(0, 2) == 0 ? "@hotmail.com" : "@gmail.com";
-            }
-            else if (nameType == NameType.Password) {
-                for (int i = 0; i < random.Next(1, 3); i++) {
-                    result += nameLists["object"][random.Next(0, nameLists["object"].Count)];
-                }
-
-                for (int i = 0; i < random.Next(0, 6); i++) {
-                    result += random.Next(0, 10);
-                }
-            }
-
-            return result;
-        }
-
         private void generateFacesBtn_Click(object sender, EventArgs e) {
             int times = (int)facesNumeric.Value;
             facesBar.Value = 0;
@@ -162,7 +166,7 @@ namespace socialmediadatagenerator
             {
                 for (int x = 0; x < times; x++)
                 {
-                    RequestsAPI.GetProfilePicture((x).ToString());
+                    RequestsAPI.SaveProfilePicture((x).ToString());
                     Invoke(new Action( () => {
                         facesBar.Value++;
                     }));
@@ -217,12 +221,22 @@ namespace socialmediadatagenerator
             lastNameListBtn.Enabled = customNamelistsCheckbox.Checked;
         }
 
-        private void button2_Click(object sender, EventArgs e) {
+        private async void button2_Click(object sender, EventArgs e) {
             int total = (int)generateNumeric.Value;
+            generateBar.Value = 0;
+            generateBar.Maximum = total;
+
+            Task<Identity> task;
+            Identity temp;
             for (int i = 0; i < total; i++) {
-                generatedUsers.Add(GenerateIdentity());
+                task = GenerateIdentity();
+                temp = await task;
+                Invoke(new Action(() => {
+                    generatedUsers.Add(temp);
+                    UpdatePreviewList();
+                    generateBar.Value++;
+                }));
             }
-            UpdatePreviewList();
         }
     }
 }
