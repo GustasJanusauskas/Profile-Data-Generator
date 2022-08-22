@@ -46,12 +46,25 @@ namespace socialmediadatagenerator
             this.previewListView = new System.Windows.Forms.ListView();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.generationGroup = new System.Windows.Forms.GroupBox();
+            this.generateBar = new System.Windows.Forms.ProgressBar();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.generateBtn = new System.Windows.Forms.Button();
             this.generateNumeric = new System.Windows.Forms.NumericUpDown();
             this.tokenBox = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tokenGroup = new System.Windows.Forms.GroupBox();
-            this.generateBar = new System.Windows.Forms.ProgressBar();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.redditSecretBox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.redditIDBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.redditPasswordBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.redditUsernameBox = new System.Windows.Forms.TextBox();
+            this.mainProgBar = new System.Windows.Forms.ProgressBar();
+            this.mainTaskLabel = new System.Windows.Forms.Label();
+            this.genPostsBtn = new System.Windows.Forms.Button();
+            this.genPostsNumeric = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
             this.nameBox.SuspendLayout();
@@ -59,6 +72,8 @@ namespace socialmediadatagenerator
             this.generationGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.generateNumeric)).BeginInit();
             this.tokenGroup.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.genPostsNumeric)).BeginInit();
             this.SuspendLayout();
             // 
             // generateFacesBtn
@@ -122,9 +137,9 @@ namespace socialmediadatagenerator
             this.nameBox.Controls.Add(this.lastNameListBtn);
             this.nameBox.Controls.Add(this.nameListBtn);
             this.nameBox.Controls.Add(this.generateEmailsCheckbox);
-            this.nameBox.Location = new System.Drawing.Point(12, 100);
+            this.nameBox.Location = new System.Drawing.Point(206, 100);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(188, 253);
+            this.nameBox.Size = new System.Drawing.Size(206, 256);
             this.nameBox.TabIndex = 4;
             this.nameBox.TabStop = false;
             this.nameBox.Text = "Names";
@@ -226,7 +241,7 @@ namespace socialmediadatagenerator
             this.previewBox.Controls.Add(this.previewListView);
             this.previewBox.Location = new System.Drawing.Point(418, 12);
             this.previewBox.Name = "previewBox";
-            this.previewBox.Size = new System.Drawing.Size(318, 341);
+            this.previewBox.Size = new System.Drawing.Size(318, 344);
             this.previewBox.TabIndex = 5;
             this.previewBox.TabStop = false;
             this.previewBox.Text = "Preview";
@@ -256,7 +271,23 @@ namespace socialmediadatagenerator
             this.generationGroup.Size = new System.Drawing.Size(206, 82);
             this.generationGroup.TabIndex = 4;
             this.generationGroup.TabStop = false;
-            this.generationGroup.Text = "Generation";
+            this.generationGroup.Text = "Identities";
+            // 
+            // generateBar
+            // 
+            this.generateBar.Location = new System.Drawing.Point(6, 48);
+            this.generateBar.Name = "generateBar";
+            this.generateBar.Size = new System.Drawing.Size(194, 23);
+            this.generateBar.TabIndex = 3;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(135, 303);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(219, 98);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Preview";
             // 
             // generateBtn
             // 
@@ -264,7 +295,7 @@ namespace socialmediadatagenerator
             this.generateBtn.Name = "generateBtn";
             this.generateBtn.Size = new System.Drawing.Size(123, 23);
             this.generateBtn.TabIndex = 0;
-            this.generateBtn.Text = "Generate users";
+            this.generateBtn.Text = "Create users";
             this.generateBtn.UseVisualStyleBackColor = true;
             this.generateBtn.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -294,48 +325,164 @@ namespace socialmediadatagenerator
             // 
             this.tokenBox.Location = new System.Drawing.Point(6, 19);
             this.tokenBox.Name = "tokenBox";
-            this.tokenBox.Size = new System.Drawing.Size(194, 20);
+            this.tokenBox.Size = new System.Drawing.Size(175, 20);
             this.tokenBox.TabIndex = 6;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Location = new System.Drawing.Point(135, 303);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(219, 98);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Preview";
             // 
             // tokenGroup
             // 
             this.tokenGroup.Controls.Add(this.tokenBox);
-            this.tokenGroup.Location = new System.Drawing.Point(206, 307);
+            this.tokenGroup.Location = new System.Drawing.Point(12, 310);
             this.tokenGroup.Name = "tokenGroup";
-            this.tokenGroup.Size = new System.Drawing.Size(206, 46);
+            this.tokenGroup.Size = new System.Drawing.Size(188, 46);
             this.tokenGroup.TabIndex = 14;
             this.tokenGroup.TabStop = false;
             this.tokenGroup.Text = "OpenAI token";
             // 
-            // generateBar
+            // groupBox2
             // 
-            this.generateBar.Location = new System.Drawing.Point(6, 48);
-            this.generateBar.Name = "generateBar";
-            this.generateBar.Size = new System.Drawing.Size(194, 23);
-            this.generateBar.TabIndex = 3;
+            this.groupBox2.Controls.Add(this.genPostsNumeric);
+            this.groupBox2.Controls.Add(this.genPostsBtn);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.redditSecretBox);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.redditIDBox);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.redditPasswordBox);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.redditUsernameBox);
+            this.groupBox2.Location = new System.Drawing.Point(12, 100);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(188, 207);
+            this.groupBox2.TabIndex = 15;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Posts / Reddit data";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 135);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(70, 13);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "Client Secret:";
+            // 
+            // redditSecretBox
+            // 
+            this.redditSecretBox.Location = new System.Drawing.Point(6, 152);
+            this.redditSecretBox.Name = "redditSecretBox";
+            this.redditSecretBox.Size = new System.Drawing.Size(175, 20);
+            this.redditSecretBox.TabIndex = 12;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 97);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(50, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Client ID:";
+            // 
+            // redditIDBox
+            // 
+            this.redditIDBox.Location = new System.Drawing.Point(6, 113);
+            this.redditIDBox.Name = "redditIDBox";
+            this.redditIDBox.Size = new System.Drawing.Size(175, 20);
+            this.redditIDBox.TabIndex = 10;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 57);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Password:";
+            // 
+            // redditPasswordBox
+            // 
+            this.redditPasswordBox.Location = new System.Drawing.Point(6, 73);
+            this.redditPasswordBox.Name = "redditPasswordBox";
+            this.redditPasswordBox.Size = new System.Drawing.Size(175, 20);
+            this.redditPasswordBox.TabIndex = 8;
+            this.redditPasswordBox.UseSystemPasswordChar = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Username:";
+            // 
+            // redditUsernameBox
+            // 
+            this.redditUsernameBox.Location = new System.Drawing.Point(6, 32);
+            this.redditUsernameBox.Name = "redditUsernameBox";
+            this.redditUsernameBox.Size = new System.Drawing.Size(175, 20);
+            this.redditUsernameBox.TabIndex = 6;
+            // 
+            // mainProgBar
+            // 
+            this.mainProgBar.Location = new System.Drawing.Point(12, 371);
+            this.mainProgBar.Name = "mainProgBar";
+            this.mainProgBar.Size = new System.Drawing.Size(718, 23);
+            this.mainProgBar.TabIndex = 16;
+            // 
+            // mainTaskLabel
+            // 
+            this.mainTaskLabel.AutoSize = true;
+            this.mainTaskLabel.Location = new System.Drawing.Point(12, 356);
+            this.mainTaskLabel.Name = "mainTaskLabel";
+            this.mainTaskLabel.Size = new System.Drawing.Size(44, 13);
+            this.mainTaskLabel.TabIndex = 14;
+            this.mainTaskLabel.Text = "No task";
+            // 
+            // genPostsBtn
+            // 
+            this.genPostsBtn.Location = new System.Drawing.Point(6, 178);
+            this.genPostsBtn.Name = "genPostsBtn";
+            this.genPostsBtn.Size = new System.Drawing.Size(104, 23);
+            this.genPostsBtn.TabIndex = 14;
+            this.genPostsBtn.Text = "Generate posts";
+            this.genPostsBtn.UseVisualStyleBackColor = true;
+            this.genPostsBtn.Click += new System.EventHandler(this.genPostsBtn_Click);
+            // 
+            // genPostsNumeric
+            // 
+            this.genPostsNumeric.Location = new System.Drawing.Point(116, 181);
+            this.genPostsNumeric.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.genPostsNumeric.Name = "genPostsNumeric";
+            this.genPostsNumeric.Size = new System.Drawing.Size(65, 20);
+            this.genPostsNumeric.TabIndex = 14;
+            this.genPostsNumeric.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(748, 365);
+            this.ClientSize = new System.Drawing.Size(748, 406);
+            this.Controls.Add(this.mainTaskLabel);
+            this.Controls.Add(this.nameBox);
+            this.Controls.Add(this.mainProgBar);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.tokenGroup);
             this.Controls.Add(this.generationGroup);
             this.Controls.Add(this.previewBox);
-            this.Controls.Add(this.nameBox);
             this.Controls.Add(this.faceGroup);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainForm";
             this.Text = "Social Media Site Data Generator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).EndInit();
             this.faceGroup.ResumeLayout(false);
             this.nameBox.ResumeLayout(false);
@@ -345,7 +492,11 @@ namespace socialmediadatagenerator
             ((System.ComponentModel.ISupportInitialize)(this.generateNumeric)).EndInit();
             this.tokenGroup.ResumeLayout(false);
             this.tokenGroup.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.genPostsNumeric)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -374,6 +525,19 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.TextBox tokenBox;
         private System.Windows.Forms.GroupBox tokenGroup;
         private System.Windows.Forms.ProgressBar generateBar;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox redditPasswordBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox redditUsernameBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox redditSecretBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox redditIDBox;
+        private System.Windows.Forms.ProgressBar mainProgBar;
+        private System.Windows.Forms.Label mainTaskLabel;
+        private System.Windows.Forms.Button genPostsBtn;
+        private System.Windows.Forms.NumericUpDown genPostsNumeric;
     }
 }
 

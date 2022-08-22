@@ -15,15 +15,26 @@ namespace socialmediadatagenerator
     {
         List<Identity> generatedUsers = new List<Identity>();
         Dictionary<string,List<string>> nameLists = new Dictionary<string, List<string>>();
+
         String[] descriptionPrompts = { "I am", "I like", "I hate", "Why do", "I love" };
+        List<string> generatedPosts = new List<string>();
 
         Random random = new Random();
         int facesCount = 0;
+
+        string redditToken = "";
 
         public MainForm()
         {
             InitializeComponent();
             Init();
+
+            //DEBUG
+            redditUsernameBox.Text = "***REMOVED***";
+            redditPasswordBox.Text = "***REMOVED***";
+            redditIDBox.Text = "***REMOVED***";
+            redditSecretBox.Text = "***REMOVED***";
+            generateNumeric.Value = 1;
         }
 
         private void Init() {
@@ -31,8 +42,11 @@ namespace socialmediadatagenerator
 
             //Count already generated faces so we can use them later
             facesCount = Directory.GetFiles("profile_images\\").Length;
-
-            string defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "..\\..\\..\\..\\defaultdata");
+            #if DEBUG
+                string defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "..\\..\\..\\..\\defaultdata");
+            #else
+                string defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "\\defaultdata");
+            #endif
             openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
             openFileDialog1.InitialDirectory = defaultDataDir;
 
@@ -49,11 +63,14 @@ namespace socialmediadatagenerator
             previewListView.Columns.Add("Description length");
             previewListView.Columns.Add("Profile image");
 
+            if (!Directory.Exists(defaultDataDir)) {
+                MessageBox.Show("Cannot find namelist directory, make sure a 'defaultdata' directory is in the same folder as executable, or use all custom namelists, including email and usernames.", "Missing namelists", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             //Read default namelists
             foreach (var file in Directory.GetFiles(defaultDataDir)) {
                 ReadNameList(File.ReadAllText(file), Path.GetFileName(file).Replace(".txt", ""));
             }
-            UpdatePreviewList();
         }
 
         private async Task<Identity> GenerateIdentity() {
@@ -71,6 +88,10 @@ namespace socialmediadatagenerator
             //Get ML description
             var descTask = RequestsAPI.GetOpenAIResponse(descriptionPrompts[random.Next(0,descriptionPrompts.Length)],tokenBox.Text);
             result.description = await descTask;
+            //Add posts
+            for (int i = 0; i < random.Next(0,3); i++) {
+                result.posts.Add(generatedPosts[random.Next(0,generatedPosts.Count)]);
+            }
 
             return result;
         }
@@ -100,6 +121,23 @@ namespace socialmediadatagenerator
                 }
             }
 
+            return result;
+        }
+
+        private async Task<List<string>> GeneratePosts(int amount = 100, ProgressBar bar = null) {
+            List<string> result = new List<string>();
+            //Get reddit token and prompts
+            redditToken = await RequestsAPI.GetRedditToken(redditUsernameBox.Text, redditPasswordBox.Text, redditIDBox.Text, redditSecretBox.Text);
+            var postPrompts = await RequestsAPI.GetRedditWritingPrompts(redditToken,amount);
+            bar.Maximum = postPrompts.Count;
+            bar.Value = 0;
+
+            string tempPost;
+            foreach (var prompt in postPrompts) {
+                tempPost = await RequestsAPI.GetOpenAIResponse("Write a story with the prompt:\n" + prompt,tokenBox.Text);
+                result.Add(tempPost.Trim());
+                bar.Value++;
+            }
             return result;
         }
 
@@ -154,6 +192,32 @@ namespace socialmediadatagenerator
             else {
                 nameLists[category] = nameList.Split('\n').ToList();
             }
+        }
+
+        private void SaveList(List<string> list, string filename) {
+            if (!filename.Contains(".txt")) filename += ".txt";
+            if (!Directory.Exists("lists")) Directory.CreateDirectory("lists");
+
+            using (var writer = File.CreateText("lists\\" + filename)) {
+                foreach (var item in list) {
+                    //^ used as separator value
+                    writer.Write(item.Replace('^','\0') + '^');
+                }
+            }
+        }
+
+        private List<string> LoadList(string filename) {
+            if (!filename.Contains(".txt")) filename += ".txt";
+            if (!Directory.Exists("lists") || !File.Exists("lists\\" + filename)) return null;
+
+            List<string> result = new List<string>();
+            var rawStr = File.ReadAllText("lists\\" + filename);
+            foreach (var item in rawStr.Split('^')) {
+                if (item.Trim().Length == 0) continue;
+
+                result.Add(item); Console.WriteLine(item);
+            }
+            return result;
         }
 
         private void generateFacesBtn_Click(object sender, EventArgs e) {
@@ -222,12 +286,26 @@ namespace socialmediadatagenerator
         }
 
         private async void button2_Click(object sender, EventArgs e) {
+            if (tokenBox.Text.Length < 51) {
+                MessageBox.Show("Please enter your openAI token first.", "Missing openAI token", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (generatedPosts.Count == 0) {
+                MessageBox.Show("Please generate some posts first.", "Missing posts", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (facesCount == 0) {
+                MessageBox.Show("Please generate some profile images first.", "Missing profile images", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             int total = (int)generateNumeric.Value;
             generateBar.Value = 0;
             generateBar.Maximum = total;
 
             Task<Identity> task;
             Identity temp;
+            mainTaskLabel.Text = "Generating user info...";
             for (int i = 0; i < total; i++) {
                 task = GenerateIdentity();
                 temp = await task;
@@ -237,6 +315,39 @@ namespace socialmediadatagenerator
                     generateBar.Value++;
                 }));
             }
+            generateBar.Value = 0;
+            mainTaskLabel.Text = "Done!";
+        }
+
+        private async void genPostsBtn_Click(object sender, EventArgs e) {
+            if (tokenBox.Text.Length < 51) {
+                MessageBox.Show("Please enter your openAI token first.","Missing openAI token",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                return;
+            }
+            if (redditUsernameBox.Text.Length == 0 || redditPasswordBox.Text.Length == 0 || redditIDBox.Text.Length == 0 || redditSecretBox.Text.Length == 0) {
+                MessageBox.Show("Please enter your reddit API access data first.", "Missing reddit API data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            //Generate posts
+            mainTaskLabel.Text = "Generating user posts...";
+            var newPosts = await GeneratePosts((int)genPostsNumeric.Value,mainProgBar);
+            Invoke(new Action(() => {
+                foreach (var post in newPosts) {
+                    generatedPosts.Add(post);
+                }
+            }));
+            mainProgBar.Value = 0;
+            mainTaskLabel.Text = "Done!";
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+            SaveList(generatedPosts,"genPosts.txt");
+        }
+
+        private void MainForm_Load(object sender, EventArgs e) {
+            var temp = LoadList("genPosts.txt");
+            generatedPosts = temp != null ? temp : generatedPosts;
         }
     }
 }

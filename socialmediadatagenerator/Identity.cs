@@ -18,8 +18,8 @@ namespace socialmediadatagenerator
         public string description;
         public string profileImagePath;
 
-        public string[] posts;
-        public string[] imagesToUpload;
+        public List<string> posts = new List<string>();
+        public List<string> images = new List<string>();
 
         public Identity(string u = "",string f = "",string l = "") {
             userName = u;
