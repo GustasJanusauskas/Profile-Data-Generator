@@ -478,6 +478,7 @@ namespace socialmediadatagenerator
             this.pregenPostsBox.TabIndex = 13;
             this.pregenPostsBox.Text = "Use pre-generated posts";
             this.pregenPostsBox.UseVisualStyleBackColor = true;
+            this.pregenPostsBox.CheckedChanged += new System.EventHandler(this.pregenPostsBox_CheckedChanged);
             // 
             // pregenDescBox
             // 
@@ -488,6 +489,7 @@ namespace socialmediadatagenerator
             this.pregenDescBox.TabIndex = 15;
             this.pregenDescBox.Text = "Use pre-generated descriptions";
             this.pregenDescBox.UseVisualStyleBackColor = true;
+            this.pregenDescBox.CheckedChanged += new System.EventHandler(this.pregenDescBox_CheckedChanged);
             // 
             // MainForm
             // 

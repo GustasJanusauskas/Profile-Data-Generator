@@ -25,6 +25,8 @@ namespace socialmediadatagenerator
         string redditToken = "";
         string lastRedditPostName = "";
 
+        string defaultDataDir;
+
         public MainForm()
         {
             InitializeComponent();
@@ -44,9 +46,9 @@ namespace socialmediadatagenerator
             //Count already generated faces so we can use them later
             facesCount = Directory.GetFiles("profile_images\\").Length;
             #if DEBUG
-                string defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "..\\..\\..\\..\\defaultdata");
+                defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "..\\..\\..\\..\\defaultdata");
             #else
-                string defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "\\defaultdata");
+                defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "\\defaultdata");
             #endif
             openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
             openFileDialog1.InitialDirectory = defaultDataDir;
@@ -70,7 +72,7 @@ namespace socialmediadatagenerator
             }
             //Read default namelists
             foreach (var file in Directory.GetFiles(defaultDataDir)) {
-                ReadNameList(File.ReadAllText(file), Path.GetFileName(file).Replace(".txt", ""));
+                ReadNameList(File.ReadAllText(file), Path.GetFileName(file).Replace(".txt", "").Replace(".csv",""),Path.GetExtension(file));
             }
         }
 
@@ -188,11 +190,11 @@ namespace socialmediadatagenerator
         }
 
         //For automatic namelists
-        private void ReadNameList(string nameList, string category) {
+        private void ReadNameList(string nameList, string category, string extension) {
             if (!nameLists.ContainsKey(category)) nameLists.Add(category, new List<string>());
 
             //Comma separated values
-            if (openFileDialog1.FileName.Contains(',')) {
+            if (extension.Contains("csv")) {
                 nameLists[category] = nameList.Split(',').ToList();
             }
             //Assume .txt files are newline separated
@@ -290,6 +292,13 @@ namespace socialmediadatagenerator
             nameListBtn.Enabled = customNamelistsCheckbox.Checked;
             nameListFemaleBtn.Enabled = customNamelistsCheckbox.Checked;
             lastNameListBtn.Enabled = customNamelistsCheckbox.Checked;
+
+            if (!customNamelistsCheckbox.Checked) {
+                //Re-read default namelists
+                foreach (var file in Directory.GetFiles(defaultDataDir)) {
+                    ReadNameList(File.ReadAllText(file), Path.GetFileName(file).Replace(".txt", ""),Path.GetExtension(file));
+                }
+            }
         }
 
         private async void button2_Click(object sender, EventArgs e) {
@@ -358,6 +367,24 @@ namespace socialmediadatagenerator
             var temp = LoadList("genPosts.txt");
             generatedPosts = temp != null ? temp : generatedPosts;
             lastRedditPostName = File.Exists("lists\\genParams.txt") ? File.ReadAllText("lists\\genParams.txt") : "";
+        }
+
+        private void pregenPostsBox_CheckedChanged(object sender, EventArgs e) {
+            tokenBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditUsernameBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditPasswordBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditIDBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditSecretBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            genPostsBtn.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+        }
+
+        private void pregenDescBox_CheckedChanged(object sender, EventArgs e) {
+            tokenBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditUsernameBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditPasswordBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditIDBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditSecretBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            genPostsBtn.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
         }
     }
 }
