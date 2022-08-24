@@ -40,7 +40,7 @@ namespace socialmediadatagenerator
             request.Add("model","text-davinci-002");
             request.Add("prompt", prompt);
             request.Add("temperature",0.95);
-            request.Add("max_tokens",256);
+            request.Add("max_tokens",512);
 
             var content = new StringContent(request.ToString(), Encoding.UTF8, "application/json");
             var response = client.PostAsync("https://api.openai.com/v1/completions",content);
@@ -61,7 +61,7 @@ namespace socialmediadatagenerator
             client.DefaultRequestHeaders.Add("User-Agent","SocialMediaDataGenBot/0.1");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer",token);
 
-            var response = client.GetAsync($"https://oauth.reddit.com/r/writingprompts/top?t=month{ (lastName.Length > 3 ? $"&after=" + lastName : "") }&limit={amount}");
+            var response = client.GetAsync($"https://oauth.reddit.com/r/writingprompts/top?t=all{ (lastName.Length > 3 ? $"&after=" + lastName : "") }&limit={amount}");
             var data = await response;
 
             var readTask = data.Content.ReadAsStringAsync();

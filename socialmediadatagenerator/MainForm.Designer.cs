@@ -53,6 +53,8 @@ namespace socialmediadatagenerator
             this.tokenBox = new System.Windows.Forms.TextBox();
             this.tokenGroup = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.genPostsNumeric = new System.Windows.Forms.NumericUpDown();
+            this.genPostsBtn = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.redditSecretBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -63,8 +65,8 @@ namespace socialmediadatagenerator
             this.redditUsernameBox = new System.Windows.Forms.TextBox();
             this.mainProgBar = new System.Windows.Forms.ProgressBar();
             this.mainTaskLabel = new System.Windows.Forms.Label();
-            this.genPostsBtn = new System.Windows.Forms.Button();
-            this.genPostsNumeric = new System.Windows.Forms.NumericUpDown();
+            this.pregenPostsBox = new System.Windows.Forms.CheckBox();
+            this.pregenDescBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
             this.nameBox.SuspendLayout();
@@ -137,9 +139,9 @@ namespace socialmediadatagenerator
             this.nameBox.Controls.Add(this.lastNameListBtn);
             this.nameBox.Controls.Add(this.nameListBtn);
             this.nameBox.Controls.Add(this.generateEmailsCheckbox);
-            this.nameBox.Location = new System.Drawing.Point(206, 100);
+            this.nameBox.Location = new System.Drawing.Point(206, 161);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(206, 256);
+            this.nameBox.Size = new System.Drawing.Size(206, 232);
             this.nameBox.TabIndex = 4;
             this.nameBox.TabStop = false;
             this.nameBox.Text = "Names";
@@ -147,7 +149,7 @@ namespace socialmediadatagenerator
             // customNamelistsCheckbox
             // 
             this.customNamelistsCheckbox.AutoSize = true;
-            this.customNamelistsCheckbox.Location = new System.Drawing.Point(7, 230);
+            this.customNamelistsCheckbox.Location = new System.Drawing.Point(6, 210);
             this.customNamelistsCheckbox.Name = "customNamelistsCheckbox";
             this.customNamelistsCheckbox.Size = new System.Drawing.Size(128, 17);
             this.customNamelistsCheckbox.TabIndex = 12;
@@ -241,7 +243,7 @@ namespace socialmediadatagenerator
             this.previewBox.Controls.Add(this.previewListView);
             this.previewBox.Location = new System.Drawing.Point(418, 12);
             this.previewBox.Name = "previewBox";
-            this.previewBox.Size = new System.Drawing.Size(318, 344);
+            this.previewBox.Size = new System.Drawing.Size(318, 381);
             this.previewBox.TabIndex = 5;
             this.previewBox.TabStop = false;
             this.previewBox.Text = "Preview";
@@ -252,7 +254,7 @@ namespace socialmediadatagenerator
             this.previewListView.Location = new System.Drawing.Point(6, 19);
             this.previewListView.MultiSelect = false;
             this.previewListView.Name = "previewListView";
-            this.previewListView.Size = new System.Drawing.Size(306, 316);
+            this.previewListView.Size = new System.Drawing.Size(306, 355);
             this.previewListView.TabIndex = 12;
             this.previewListView.UseCompatibleStateImageBehavior = false;
             // 
@@ -262,13 +264,15 @@ namespace socialmediadatagenerator
             // 
             // generationGroup
             // 
+            this.generationGroup.Controls.Add(this.pregenPostsBox);
+            this.generationGroup.Controls.Add(this.pregenDescBox);
             this.generationGroup.Controls.Add(this.generateBar);
             this.generationGroup.Controls.Add(this.groupBox1);
             this.generationGroup.Controls.Add(this.generateBtn);
             this.generationGroup.Controls.Add(this.generateNumeric);
             this.generationGroup.Location = new System.Drawing.Point(206, 12);
             this.generationGroup.Name = "generationGroup";
-            this.generationGroup.Size = new System.Drawing.Size(206, 82);
+            this.generationGroup.Size = new System.Drawing.Size(206, 143);
             this.generationGroup.TabIndex = 4;
             this.generationGroup.TabStop = false;
             this.generationGroup.Text = "Identities";
@@ -331,7 +335,7 @@ namespace socialmediadatagenerator
             // tokenGroup
             // 
             this.tokenGroup.Controls.Add(this.tokenBox);
-            this.tokenGroup.Location = new System.Drawing.Point(12, 310);
+            this.tokenGroup.Location = new System.Drawing.Point(12, 347);
             this.tokenGroup.Name = "tokenGroup";
             this.tokenGroup.Size = new System.Drawing.Size(188, 46);
             this.tokenGroup.TabIndex = 14;
@@ -352,10 +356,37 @@ namespace socialmediadatagenerator
             this.groupBox2.Controls.Add(this.redditUsernameBox);
             this.groupBox2.Location = new System.Drawing.Point(12, 100);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(188, 207);
+            this.groupBox2.Size = new System.Drawing.Size(188, 241);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Posts / Reddit data";
+            // 
+            // genPostsNumeric
+            // 
+            this.genPostsNumeric.Location = new System.Drawing.Point(116, 215);
+            this.genPostsNumeric.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.genPostsNumeric.Name = "genPostsNumeric";
+            this.genPostsNumeric.Size = new System.Drawing.Size(65, 20);
+            this.genPostsNumeric.TabIndex = 14;
+            this.genPostsNumeric.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // genPostsBtn
+            // 
+            this.genPostsBtn.Location = new System.Drawing.Point(6, 212);
+            this.genPostsBtn.Name = "genPostsBtn";
+            this.genPostsBtn.Size = new System.Drawing.Size(104, 23);
+            this.genPostsBtn.TabIndex = 14;
+            this.genPostsBtn.Text = "Generate posts";
+            this.genPostsBtn.UseVisualStyleBackColor = true;
+            this.genPostsBtn.Click += new System.EventHandler(this.genPostsBtn_Click);
             // 
             // label4
             // 
@@ -424,7 +455,7 @@ namespace socialmediadatagenerator
             // 
             // mainProgBar
             // 
-            this.mainProgBar.Location = new System.Drawing.Point(12, 371);
+            this.mainProgBar.Location = new System.Drawing.Point(12, 411);
             this.mainProgBar.Name = "mainProgBar";
             this.mainProgBar.Size = new System.Drawing.Size(718, 23);
             this.mainProgBar.TabIndex = 16;
@@ -432,44 +463,37 @@ namespace socialmediadatagenerator
             // mainTaskLabel
             // 
             this.mainTaskLabel.AutoSize = true;
-            this.mainTaskLabel.Location = new System.Drawing.Point(12, 356);
+            this.mainTaskLabel.Location = new System.Drawing.Point(12, 396);
             this.mainTaskLabel.Name = "mainTaskLabel";
             this.mainTaskLabel.Size = new System.Drawing.Size(44, 13);
             this.mainTaskLabel.TabIndex = 14;
             this.mainTaskLabel.Text = "No task";
             // 
-            // genPostsBtn
+            // pregenPostsBox
             // 
-            this.genPostsBtn.Location = new System.Drawing.Point(6, 178);
-            this.genPostsBtn.Name = "genPostsBtn";
-            this.genPostsBtn.Size = new System.Drawing.Size(104, 23);
-            this.genPostsBtn.TabIndex = 14;
-            this.genPostsBtn.Text = "Generate posts";
-            this.genPostsBtn.UseVisualStyleBackColor = true;
-            this.genPostsBtn.Click += new System.EventHandler(this.genPostsBtn_Click);
+            this.pregenPostsBox.AutoSize = true;
+            this.pregenPostsBox.Location = new System.Drawing.Point(7, 97);
+            this.pregenPostsBox.Name = "pregenPostsBox";
+            this.pregenPostsBox.Size = new System.Drawing.Size(142, 17);
+            this.pregenPostsBox.TabIndex = 13;
+            this.pregenPostsBox.Text = "Use pre-generated posts";
+            this.pregenPostsBox.UseVisualStyleBackColor = true;
             // 
-            // genPostsNumeric
+            // pregenDescBox
             // 
-            this.genPostsNumeric.Location = new System.Drawing.Point(116, 181);
-            this.genPostsNumeric.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.genPostsNumeric.Name = "genPostsNumeric";
-            this.genPostsNumeric.Size = new System.Drawing.Size(65, 20);
-            this.genPostsNumeric.TabIndex = 14;
-            this.genPostsNumeric.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
+            this.pregenDescBox.AutoSize = true;
+            this.pregenDescBox.Location = new System.Drawing.Point(6, 120);
+            this.pregenDescBox.Name = "pregenDescBox";
+            this.pregenDescBox.Size = new System.Drawing.Size(173, 17);
+            this.pregenDescBox.TabIndex = 15;
+            this.pregenDescBox.Text = "Use pre-generated descriptions";
+            this.pregenDescBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(748, 406);
+            this.ClientSize = new System.Drawing.Size(748, 446);
             this.Controls.Add(this.mainTaskLabel);
             this.Controls.Add(this.nameBox);
             this.Controls.Add(this.mainProgBar);
@@ -489,6 +513,7 @@ namespace socialmediadatagenerator
             this.nameBox.PerformLayout();
             this.previewBox.ResumeLayout(false);
             this.generationGroup.ResumeLayout(false);
+            this.generationGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.generateNumeric)).EndInit();
             this.tokenGroup.ResumeLayout(false);
             this.tokenGroup.PerformLayout();
@@ -538,6 +563,8 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.Label mainTaskLabel;
         private System.Windows.Forms.Button genPostsBtn;
         private System.Windows.Forms.NumericUpDown genPostsNumeric;
+        private System.Windows.Forms.CheckBox pregenPostsBox;
+        private System.Windows.Forms.CheckBox pregenDescBox;
     }
 }
 

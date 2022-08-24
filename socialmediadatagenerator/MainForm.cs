@@ -86,12 +86,17 @@ namespace socialmediadatagenerator
             result.lastName = nameLists["lastname"][random.Next(0, nameLists["lastname"].Count)];
 
             result.profileImagePath = Directory.GetFiles("profile_images\\")[random.Next(0,facesCount)];
-            //Get ML description
-            var descTask = RequestsAPI.GetOpenAIResponse(descriptionPrompts[random.Next(0,descriptionPrompts.Length)],tokenBox.Text);
-            result.description = await descTask;
+            //Get description
+            if (pregenDescBox.Checked) {
+                result.description = nameLists["description"][random.Next(0, nameLists["description"].Count)];
+            }
+            else {
+                var descTask = RequestsAPI.GetOpenAIResponse(descriptionPrompts[random.Next(0, descriptionPrompts.Length)], tokenBox.Text);
+                result.description = await descTask;
+            }
             //Add posts
             for (int i = 0; i < random.Next(0,3); i++) {
-                result.posts.Add(generatedPosts[random.Next(0,generatedPosts.Count)]);
+                result.posts.Add(pregenPostsBox.Checked ? nameLists["post"][random.Next(0,nameLists["post"].Count)] : generatedPosts[random.Next(0,generatedPosts.Count)]);
             }
 
             return result;
@@ -288,11 +293,11 @@ namespace socialmediadatagenerator
         }
 
         private async void button2_Click(object sender, EventArgs e) {
-            if (tokenBox.Text.Length < 51) {
+            if (tokenBox.Text.Length < 51 && (!pregenPostsBox.Checked || !pregenDescBox.Checked)) {
                 MessageBox.Show("Please enter your openAI token first.", "Missing openAI token", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (generatedPosts.Count == 0) {
+            if (generatedPosts.Count == 0 && !pregenPostsBox.Checked) {
                 MessageBox.Show("Please generate some posts first.", "Missing posts", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
