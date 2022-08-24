@@ -23,6 +23,7 @@ namespace socialmediadatagenerator
         int facesCount = 0;
 
         string redditToken = "";
+        string lastRedditPostName = "";
 
         public MainForm()
         {
@@ -124,21 +125,22 @@ namespace socialmediadatagenerator
             return result;
         }
 
-        private async Task<List<string>> GeneratePosts(int amount = 100, ProgressBar bar = null) {
+        private async Task<PromptResult> GeneratePosts(int amount = 100, ProgressBar bar = null) {
             List<string> result = new List<string>();
             //Get reddit token and prompts
             redditToken = await RequestsAPI.GetRedditToken(redditUsernameBox.Text, redditPasswordBox.Text, redditIDBox.Text, redditSecretBox.Text);
-            var postPrompts = await RequestsAPI.GetRedditWritingPrompts(redditToken,amount);
-            bar.Maximum = postPrompts.Count;
+            var postPrompts = await RequestsAPI.GetRedditWritingPrompts(redditToken,amount,lastRedditPostName);
+            bar.Maximum = postPrompts.prompts.Count;
             bar.Value = 0;
 
             string tempPost;
-            foreach (var prompt in postPrompts) {
+            foreach (var prompt in postPrompts.prompts) {
                 tempPost = await RequestsAPI.GetOpenAIResponse("Write a story with the prompt:\n" + prompt,tokenBox.Text);
+                if (tempPost == null) continue;
                 result.Add(tempPost.Trim());
                 bar.Value++;
             }
-            return result;
+            return new PromptResult(result,postPrompts.lastPromptName);
         }
 
         private void UpdatePreviewList() {
@@ -215,7 +217,7 @@ namespace socialmediadatagenerator
             foreach (var item in rawStr.Split('^')) {
                 if (item.Trim().Length == 0) continue;
 
-                result.Add(item); Console.WriteLine(item);
+                result.Add(item);
             }
             return result;
         }
@@ -333,7 +335,8 @@ namespace socialmediadatagenerator
             mainTaskLabel.Text = "Generating user posts...";
             var newPosts = await GeneratePosts((int)genPostsNumeric.Value,mainProgBar);
             Invoke(new Action(() => {
-                foreach (var post in newPosts) {
+                lastRedditPostName = newPosts.lastPromptName;
+                foreach (var post in newPosts.prompts) {
                     generatedPosts.Add(post);
                 }
             }));
@@ -343,11 +346,13 @@ namespace socialmediadatagenerator
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
             SaveList(generatedPosts,"genPosts.txt");
+            File.WriteAllText("lists\\genParams.txt", lastRedditPostName);
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
             var temp = LoadList("genPosts.txt");
             generatedPosts = temp != null ? temp : generatedPosts;
+            lastRedditPostName = File.Exists("lists\\genParams.txt") ? File.ReadAllText("lists\\genParams.txt") : "";
         }
     }
 }

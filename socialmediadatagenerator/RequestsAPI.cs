@@ -54,22 +54,24 @@ namespace socialmediadatagenerator
             return dataJson["choices"][0]["text"];
         }
 
-        public static async Task<List<string>> GetRedditWritingPrompts(string token, int amount) {
+        public static async Task<PromptResult> GetRedditWritingPrompts(string token, int amount, string lastName = "") {
             List<string> results = new List<string>();
             //Headers
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Add("User-Agent","SocialMediaDataGenBot/0.1");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer",token);
 
-            var response = client.GetAsync("https://oauth.reddit.com/r/writingprompts/top?t=month&limit=" + amount);
+            var response = client.GetAsync($"https://oauth.reddit.com/r/writingprompts/top?t=month{ (lastName.Length > 3 ? $"&after=" + lastName : "") }&limit={amount}");
             var data = await response;
 
             var readTask = data.Content.ReadAsStringAsync();
             var dataStr = await readTask;
-            var dataJson = JsonObject.Parse(dataStr);
+            var dataJson = JsonObject.Parse(dataStr); Console.WriteLine(dataStr);
 
             var regex = new Regex(@"(\[WP\]|\[SP\]|\[EU\]|\[CW\]|\[TT\]|\[MP\]|\[IP\]|\[RF\])");
+            string lastPostName = "";
             string postText;
+            int ind = 0;
             foreach (JsonObject post in dataJson["data"]["children"]) {
                 postText = post["data"]["title"].ToString();
                 //Ignore non prompt posts
@@ -77,9 +79,11 @@ namespace socialmediadatagenerator
                 //Clear any flairs from post titles
                 postText = regex.Replace(postText,"").Trim();
                 results.Add(postText);
+                if (ind == dataJson["data"]["children"].Count - 1) lastPostName = post["data"]["name"];
+                ind++;
             }
 
-            return results;
+            return new PromptResult(results,lastPostName);
         }
 
         public static async Task<string> GetRedditToken(string username, string password, string clientID, string clientSecret) {
