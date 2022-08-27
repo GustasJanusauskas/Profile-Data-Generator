@@ -32,13 +32,6 @@ namespace socialmediadatagenerator
         {
             InitializeComponent();
             Init();
-
-            //DEBUG
-            redditUsernameBox.Text = "***REMOVED***";
-            redditPasswordBox.Text = "***REMOVED***";
-            redditIDBox.Text = "***REMOVED***";
-            redditSecretBox.Text = "***REMOVED***";
-            generateNumeric.Value = 1;
         }
 
         private void Init() {
@@ -417,7 +410,8 @@ namespace socialmediadatagenerator
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            var aboutForm = new AboutForm();
+            aboutForm.ShowDialog();
         }
     }
 }
