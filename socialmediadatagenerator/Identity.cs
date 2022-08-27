@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace socialmediadatagenerator
 {
-    class Identity {
-        public string userName;
-        public string email;
-        public string password;
+    public class Identity {
+        public string userName { get; set; }
+        public string email { get; set; }
+        public string password { get; set; }
 
-        public string firstName;
-        public string lastName;
-        public string gender;
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string gender { get; set; }
 
-        public string description;
-        public string profileImagePath;
+        public string description { get; set; }
+        public string profileImagePath { get; set; }
 
-        public List<string> posts = new List<string>();
-        public List<string> images = new List<string>();
+        public List<string> posts { get; set; } = new List<string>();
+        public List<string> images { get; set; } = new List<string>();
 
-        public Identity(string u = "",string f = "",string l = "") {
+public Identity(string u = "",string f = "",string l = "") {
             userName = u;
             firstName = f;
             lastName = l;

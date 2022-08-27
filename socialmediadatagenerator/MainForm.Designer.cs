@@ -46,6 +46,8 @@ namespace socialmediadatagenerator
             this.previewListView = new System.Windows.Forms.ListView();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.generationGroup = new System.Windows.Forms.GroupBox();
+            this.pregenPostsBox = new System.Windows.Forms.CheckBox();
+            this.pregenDescBox = new System.Windows.Forms.CheckBox();
             this.generateBar = new System.Windows.Forms.ProgressBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.generateBtn = new System.Windows.Forms.Button();
@@ -65,8 +67,12 @@ namespace socialmediadatagenerator
             this.redditUsernameBox = new System.Windows.Forms.TextBox();
             this.mainProgBar = new System.Windows.Forms.ProgressBar();
             this.mainTaskLabel = new System.Windows.Forms.Label();
-            this.pregenPostsBox = new System.Windows.Forms.CheckBox();
-            this.pregenDescBox = new System.Windows.Forms.CheckBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToJsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.registerToSocialmediasiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
             this.nameBox.SuspendLayout();
@@ -76,6 +82,7 @@ namespace socialmediadatagenerator
             this.tokenGroup.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.genPostsNumeric)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // generateFacesBtn
@@ -122,7 +129,7 @@ namespace socialmediadatagenerator
             this.faceGroup.Controls.Add(this.generateFacesBtn);
             this.faceGroup.Controls.Add(this.facesNumeric);
             this.faceGroup.Controls.Add(this.facesBar);
-            this.faceGroup.Location = new System.Drawing.Point(12, 12);
+            this.faceGroup.Location = new System.Drawing.Point(12, 37);
             this.faceGroup.Name = "faceGroup";
             this.faceGroup.Size = new System.Drawing.Size(188, 82);
             this.faceGroup.TabIndex = 3;
@@ -139,7 +146,7 @@ namespace socialmediadatagenerator
             this.nameBox.Controls.Add(this.lastNameListBtn);
             this.nameBox.Controls.Add(this.nameListBtn);
             this.nameBox.Controls.Add(this.generateEmailsCheckbox);
-            this.nameBox.Location = new System.Drawing.Point(206, 161);
+            this.nameBox.Location = new System.Drawing.Point(206, 186);
             this.nameBox.Name = "nameBox";
             this.nameBox.Size = new System.Drawing.Size(206, 232);
             this.nameBox.TabIndex = 4;
@@ -241,7 +248,7 @@ namespace socialmediadatagenerator
             // previewBox
             // 
             this.previewBox.Controls.Add(this.previewListView);
-            this.previewBox.Location = new System.Drawing.Point(418, 12);
+            this.previewBox.Location = new System.Drawing.Point(418, 37);
             this.previewBox.Name = "previewBox";
             this.previewBox.Size = new System.Drawing.Size(318, 381);
             this.previewBox.TabIndex = 5;
@@ -270,12 +277,34 @@ namespace socialmediadatagenerator
             this.generationGroup.Controls.Add(this.groupBox1);
             this.generationGroup.Controls.Add(this.generateBtn);
             this.generationGroup.Controls.Add(this.generateNumeric);
-            this.generationGroup.Location = new System.Drawing.Point(206, 12);
+            this.generationGroup.Location = new System.Drawing.Point(206, 37);
             this.generationGroup.Name = "generationGroup";
             this.generationGroup.Size = new System.Drawing.Size(206, 143);
             this.generationGroup.TabIndex = 4;
             this.generationGroup.TabStop = false;
             this.generationGroup.Text = "Identities";
+            // 
+            // pregenPostsBox
+            // 
+            this.pregenPostsBox.AutoSize = true;
+            this.pregenPostsBox.Location = new System.Drawing.Point(7, 97);
+            this.pregenPostsBox.Name = "pregenPostsBox";
+            this.pregenPostsBox.Size = new System.Drawing.Size(142, 17);
+            this.pregenPostsBox.TabIndex = 13;
+            this.pregenPostsBox.Text = "Use pre-generated posts";
+            this.pregenPostsBox.UseVisualStyleBackColor = true;
+            this.pregenPostsBox.CheckedChanged += new System.EventHandler(this.pregenPostsBox_CheckedChanged);
+            // 
+            // pregenDescBox
+            // 
+            this.pregenDescBox.AutoSize = true;
+            this.pregenDescBox.Location = new System.Drawing.Point(6, 120);
+            this.pregenDescBox.Name = "pregenDescBox";
+            this.pregenDescBox.Size = new System.Drawing.Size(173, 17);
+            this.pregenDescBox.TabIndex = 15;
+            this.pregenDescBox.Text = "Use pre-generated descriptions";
+            this.pregenDescBox.UseVisualStyleBackColor = true;
+            this.pregenDescBox.CheckedChanged += new System.EventHandler(this.pregenDescBox_CheckedChanged);
             // 
             // generateBar
             // 
@@ -335,7 +364,7 @@ namespace socialmediadatagenerator
             // tokenGroup
             // 
             this.tokenGroup.Controls.Add(this.tokenBox);
-            this.tokenGroup.Location = new System.Drawing.Point(12, 347);
+            this.tokenGroup.Location = new System.Drawing.Point(12, 372);
             this.tokenGroup.Name = "tokenGroup";
             this.tokenGroup.Size = new System.Drawing.Size(188, 46);
             this.tokenGroup.TabIndex = 14;
@@ -354,7 +383,7 @@ namespace socialmediadatagenerator
             this.groupBox2.Controls.Add(this.redditPasswordBox);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.redditUsernameBox);
-            this.groupBox2.Location = new System.Drawing.Point(12, 100);
+            this.groupBox2.Location = new System.Drawing.Point(12, 125);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(188, 241);
             this.groupBox2.TabIndex = 15;
@@ -455,7 +484,7 @@ namespace socialmediadatagenerator
             // 
             // mainProgBar
             // 
-            this.mainProgBar.Location = new System.Drawing.Point(12, 411);
+            this.mainProgBar.Location = new System.Drawing.Point(12, 436);
             this.mainProgBar.Name = "mainProgBar";
             this.mainProgBar.Size = new System.Drawing.Size(718, 23);
             this.mainProgBar.TabIndex = 16;
@@ -463,39 +492,57 @@ namespace socialmediadatagenerator
             // mainTaskLabel
             // 
             this.mainTaskLabel.AutoSize = true;
-            this.mainTaskLabel.Location = new System.Drawing.Point(12, 396);
+            this.mainTaskLabel.Location = new System.Drawing.Point(12, 421);
             this.mainTaskLabel.Name = "mainTaskLabel";
             this.mainTaskLabel.Size = new System.Drawing.Size(44, 13);
             this.mainTaskLabel.TabIndex = 14;
             this.mainTaskLabel.Text = "No task";
             // 
-            // pregenPostsBox
+            // menuStrip1
             // 
-            this.pregenPostsBox.AutoSize = true;
-            this.pregenPostsBox.Location = new System.Drawing.Point(7, 97);
-            this.pregenPostsBox.Name = "pregenPostsBox";
-            this.pregenPostsBox.Size = new System.Drawing.Size(142, 17);
-            this.pregenPostsBox.TabIndex = 13;
-            this.pregenPostsBox.Text = "Use pre-generated posts";
-            this.pregenPostsBox.UseVisualStyleBackColor = true;
-            this.pregenPostsBox.CheckedChanged += new System.EventHandler(this.pregenPostsBox_CheckedChanged);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(746, 24);
+            this.menuStrip1.TabIndex = 17;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // pregenDescBox
+            // fileToolStripMenuItem
             // 
-            this.pregenDescBox.AutoSize = true;
-            this.pregenDescBox.Location = new System.Drawing.Point(6, 120);
-            this.pregenDescBox.Name = "pregenDescBox";
-            this.pregenDescBox.Size = new System.Drawing.Size(173, 17);
-            this.pregenDescBox.TabIndex = 15;
-            this.pregenDescBox.Text = "Use pre-generated descriptions";
-            this.pregenDescBox.UseVisualStyleBackColor = true;
-            this.pregenDescBox.CheckedChanged += new System.EventHandler(this.pregenDescBox_CheckedChanged);
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportToJsonToolStripMenuItem,
+            this.registerToSocialmediasiteToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // exportToJsonToolStripMenuItem
+            // 
+            this.exportToJsonToolStripMenuItem.Name = "exportToJsonToolStripMenuItem";
+            this.exportToJsonToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.exportToJsonToolStripMenuItem.Text = "Export to Json..";
+            this.exportToJsonToolStripMenuItem.Click += new System.EventHandler(this.exportToJsonToolStripMenuItem_Click);
+            // 
+            // registerToSocialmediasiteToolStripMenuItem
+            // 
+            this.registerToSocialmediasiteToolStripMenuItem.Name = "registerToSocialmediasiteToolStripMenuItem";
+            this.registerToSocialmediasiteToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.registerToSocialmediasiteToolStripMenuItem.Text = "Register to socialmediasite..";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.aboutToolStripMenuItem.Text = "About..";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(748, 446);
+            this.ClientSize = new System.Drawing.Size(746, 472);
             this.Controls.Add(this.mainTaskLabel);
             this.Controls.Add(this.nameBox);
             this.Controls.Add(this.mainProgBar);
@@ -504,7 +551,9 @@ namespace socialmediadatagenerator
             this.Controls.Add(this.generationGroup);
             this.Controls.Add(this.previewBox);
             this.Controls.Add(this.faceGroup);
+            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Social Media Site Data Generator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -522,6 +571,8 @@ namespace socialmediadatagenerator
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.genPostsNumeric)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -567,6 +618,12 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.NumericUpDown genPostsNumeric;
         private System.Windows.Forms.CheckBox pregenPostsBox;
         private System.Windows.Forms.CheckBox pregenDescBox;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToJsonToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem registerToSocialmediasiteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

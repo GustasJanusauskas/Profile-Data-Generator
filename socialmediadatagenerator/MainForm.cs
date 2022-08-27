@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.Json;
 
 namespace socialmediadatagenerator
 {
@@ -52,6 +53,9 @@ namespace socialmediadatagenerator
             #endif
             openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
             openFileDialog1.InitialDirectory = defaultDataDir;
+
+            saveFileDialog1.Filter = "Text files|*.txt";
+            saveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory();
 
             previewListView.View = View.Details;
             previewListView.FullRowSelect = true;
@@ -187,6 +191,11 @@ namespace socialmediadatagenerator
             else if (openFileDialog1.FileName.Contains(".csv")) {
                 nameLists[category] = tempStr.Split(',').ToList();
             }
+
+            //Clean up values
+            for (int i = 0; i < nameLists[category].Count; i++) {
+                nameLists[category][i] = nameLists[category][i].Trim();
+            }
         }
 
         //For automatic namelists
@@ -200,6 +209,11 @@ namespace socialmediadatagenerator
             //Assume .txt files are newline separated
             else {
                 nameLists[category] = nameList.Split('\n').ToList();
+            }
+
+            //Clean up values
+            for (int i = 0; i < nameLists[category].Count; i++) {
+                nameLists[category][i] = nameLists[category][i].Trim();
             }
         }
 
@@ -385,6 +399,25 @@ namespace socialmediadatagenerator
             redditIDBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
             redditSecretBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
             genPostsBtn.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+        }
+
+        private void exportToJsonToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (generatedUsers.Count <= 0) {
+                MessageBox.Show("Please generate some users first.", "No generated users", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
+                string toWrite = "";
+                foreach (var user in generatedUsers) {
+                    toWrite += JsonSerializer.Serialize(user, new JsonSerializerOptions { WriteIndented = true } );
+                }
+                File.WriteAllText(saveFileDialog1.FileName,toWrite);
+            }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+
         }
     }
 }
