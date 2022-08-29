@@ -378,20 +378,20 @@ namespace socialmediadatagenerator
 
         private void pregenPostsBox_CheckedChanged(object sender, EventArgs e) {
             tokenBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            redditUsernameBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            redditPasswordBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            redditIDBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            redditSecretBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            genPostsBtn.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditUsernameBox.Enabled = !pregenPostsBox.Checked;
+            redditPasswordBox.Enabled = !pregenPostsBox.Checked;
+            redditIDBox.Enabled = !pregenPostsBox.Checked;
+            redditSecretBox.Enabled = !pregenPostsBox.Checked;
+            genPostsBtn.Enabled = !pregenPostsBox.Checked;
         }
 
         private void pregenDescBox_CheckedChanged(object sender, EventArgs e) {
             tokenBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            redditUsernameBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            redditPasswordBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            redditIDBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            redditSecretBox.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
-            genPostsBtn.Enabled = !(pregenPostsBox.Checked && pregenDescBox.Checked);
+            redditUsernameBox.Enabled = !pregenPostsBox.Checked;
+            redditPasswordBox.Enabled = !pregenPostsBox.Checked;
+            redditIDBox.Enabled = !pregenPostsBox.Checked;
+            redditSecretBox.Enabled = !pregenPostsBox.Checked;
+            genPostsBtn.Enabled = !pregenPostsBox.Checked;
         }
 
         private void exportToJsonToolStripMenuItem_Click(object sender, EventArgs e) {
