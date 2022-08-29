@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.Json;
+using System.Json;
 
 namespace socialmediadatagenerator
 {
@@ -16,9 +17,10 @@ namespace socialmediadatagenerator
     {
         List<Identity> generatedUsers = new List<Identity>();
         Dictionary<string,List<string>> nameLists = new Dictionary<string, List<string>>();
+        List<Post> pregenPosts = new List<Post>();
 
         String[] descriptionPrompts = { "I am", "I like", "I hate", "Why do", "I love" };
-        List<string> generatedPosts = new List<string>();
+        List<Post> generatedPosts = new List<Post>();
 
         Random random = new Random();
         int facesCount = 0;
@@ -69,15 +71,18 @@ namespace socialmediadatagenerator
             }
             //Read default namelists
             foreach (var file in Directory.GetFiles(defaultDataDir)) {
-                ReadNameList(File.ReadAllText(file), Path.GetFileName(file).Replace(".txt", "").Replace(".csv",""),Path.GetExtension(file));
+                if (new string[] { ".txt",".csv" }.Contains(Path.GetExtension(file))) ReadNameList(File.ReadAllText(file), Path.GetFileName(file).Replace(".txt", "").Replace(".csv",""),Path.GetExtension(file));
+                else if (new string[] { ".json" }.Contains(Path.GetExtension(file))) pregenPosts = LoadListJson(file);
             }
         }
 
+        int usernameInd = 0;
+        int emailInd = 0;
         private async Task<Identity> GenerateIdentity() {
             Identity result = new Identity();
 
-            result.email = generateEmailsCheckbox.Checked ? GenerateName(NameType.Email) : nameLists["email"][random.Next(0, nameLists["email"].Count)];
-            result.userName = generateUsernamesCheckbox.Checked ? GenerateName(NameType.Username) : nameLists["username"][random.Next(0, nameLists["username"].Count)];
+            result.email = generateEmailsCheckbox.Checked ? GenerateName(NameType.Email) : nameLists["email"][emailInd++];
+            result.userName = generateUsernamesCheckbox.Checked ? GenerateName(NameType.Username) : nameLists["username"][usernameInd++];
             result.password = GenerateName(NameType.Password);
 
             result.gender = random.Next(0, 2) == 0 ? "male" : "female";
@@ -95,7 +100,12 @@ namespace socialmediadatagenerator
             }
             //Add posts
             for (int i = 0; i < random.Next(0,3); i++) {
-                result.posts.Add(pregenPostsBox.Checked ? nameLists["post"][random.Next(0,nameLists["post"].Count)] : generatedPosts[random.Next(0,generatedPosts.Count)]);
+                if (pregenPostsBox.Checked) {
+                    result.posts.Add(pregenPosts[random.Next(0, pregenPosts.Count)]);
+                }
+                else {
+                    result.posts.Add(generatedPosts[random.Next(0, generatedPosts.Count)]);
+                }
             }
 
             return result;
@@ -140,11 +150,11 @@ namespace socialmediadatagenerator
             string tempPost;
             foreach (var prompt in postPrompts.prompts) {
                 tempPost = await RequestsAPI.GetOpenAIResponse("Write a story with the prompt:\n" + prompt,tokenBox.Text);
-                if (tempPost == null) continue;
+                if (tempPost == null) continue; var avatarbase64 = HelperFunctions.ConvertToBase64String(File.OpenRead("profile_images\\" + user.profileImagePath));
                 result.Add(tempPost.Trim());
                 bar.Value++;
             }
-            return new PromptResult(result,postPrompts.lastPromptName);
+            return new PromptResult(result,postPrompts.prompts,postPrompts.lastPromptName);
         }
 
         private void UpdatePreviewList() {
@@ -222,6 +232,15 @@ namespace socialmediadatagenerator
             }
         }
 
+        private void SaveList(List<Post> list, string filename) {
+            if (!filename.Contains(".json")) filename += ".json";
+            if (!Directory.Exists("lists")) Directory.CreateDirectory("lists");
+
+            using (var writer = File.CreateText("lists\\" + filename)) {
+                writer.Write( JsonSerializer.Serialize(list));
+            }
+        }
+
         private List<string> LoadList(string filename) {
             if (!filename.Contains(".txt")) filename += ".txt";
             if (!Directory.Exists("lists") || !File.Exists("lists\\" + filename)) return null;
@@ -234,6 +253,15 @@ namespace socialmediadatagenerator
                 result.Add(item);
             }
             return result;
+        }
+
+        private List<Post> LoadListJson(string filename) {
+            if (!filename.Contains(".json")) filename += ".json";
+            if (!Directory.Exists("lists") || !File.Exists("lists\\" + filename)) return null;
+
+            var rawStr = File.ReadAllText("lists\\" + filename);
+
+            return JsonSerializer.Deserialize<List<Post>>(rawStr);
         }
 
         private void generateFacesBtn_Click(object sender, EventArgs e) {
@@ -309,6 +337,8 @@ namespace socialmediadatagenerator
         }
 
         private async void button2_Click(object sender, EventArgs e) {
+            int total = (int)generateNumeric.Value;
+
             if (tokenBox.Text.Length < 51 && (!pregenPostsBox.Checked || !pregenDescBox.Checked)) {
                 MessageBox.Show("Please enter your openAI token first.", "Missing openAI token", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -321,8 +351,15 @@ namespace socialmediadatagenerator
                 MessageBox.Show("Please generate some profile images first.", "Missing profile images", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (!generateEmailsCheckbox.Checked && total > nameLists["email"].Count) {
+                MessageBox.Show("Your custom email list is too short for the amount of users you have chosen to generate!", "Custom email list too short", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!generateUsernamesCheckbox.Checked && total > nameLists["username"].Count) {
+                MessageBox.Show("Your custom username list is too short for the amount of users you have chosen to generate!", "Custom username list too short", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            int total = (int)generateNumeric.Value;
             generateBar.Value = 0;
             generateBar.Maximum = total;
 
@@ -357,8 +394,8 @@ namespace socialmediadatagenerator
             var newPosts = await GeneratePosts((int)genPostsNumeric.Value,mainProgBar);
             Invoke(new Action(() => {
                 lastRedditPostName = newPosts.lastPromptName;
-                foreach (var post in newPosts.prompts) {
-                    generatedPosts.Add(post);
+                for (int i = 0; i < newPosts.posts.Count; i++) {
+                    generatedPosts.Add(new Post(newPosts.prompts[i],newPosts.posts[i]));
                 }
             }));
             mainProgBar.Value = 0;
@@ -366,12 +403,12 @@ namespace socialmediadatagenerator
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            SaveList(generatedPosts,"genPosts.txt");
+            SaveList(generatedPosts,"genPosts.json");
             File.WriteAllText("lists\\genParams.txt", lastRedditPostName);
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
-            var temp = LoadList("genPosts.txt");
+            var temp = LoadListJson("genPosts.json");
             generatedPosts = temp != null ? temp : generatedPosts;
             lastRedditPostName = File.Exists("lists\\genParams.txt") ? File.ReadAllText("lists\\genParams.txt") : "";
         }
@@ -393,6 +430,10 @@ namespace socialmediadatagenerator
             redditSecretBox.Enabled = !pregenPostsBox.Checked;
             genPostsBtn.Enabled = !pregenPostsBox.Checked;
         }
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+            var aboutForm = new AboutForm();
+            aboutForm.ShowDialog();
+        }
 
         private void exportToJsonToolStripMenuItem_Click(object sender, EventArgs e) {
             if (generatedUsers.Count <= 0) {
@@ -409,9 +450,14 @@ namespace socialmediadatagenerator
             }
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
-            var aboutForm = new AboutForm();
-            aboutForm.ShowDialog();
+        private void registerToSocialmediasiteToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (generatedUsers.Count <= 0) {
+                MessageBox.Show("Please generate some users first.", "No generated users", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var registerForm = new RegisterUsersForm(generatedUsers,defaultDataDir);
+            registerForm.ShowDialog();
         }
     }
 }

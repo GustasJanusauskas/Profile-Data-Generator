@@ -486,7 +486,7 @@ namespace socialmediadatagenerator
             // 
             this.mainProgBar.Location = new System.Drawing.Point(12, 436);
             this.mainProgBar.Name = "mainProgBar";
-            this.mainProgBar.Size = new System.Drawing.Size(718, 23);
+            this.mainProgBar.Size = new System.Drawing.Size(724, 23);
             this.mainProgBar.TabIndex = 16;
             // 
             // mainTaskLabel
@@ -530,6 +530,7 @@ namespace socialmediadatagenerator
             this.registerToSocialmediasiteToolStripMenuItem.Name = "registerToSocialmediasiteToolStripMenuItem";
             this.registerToSocialmediasiteToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.registerToSocialmediasiteToolStripMenuItem.Text = "Register to socialmediasite..";
+            this.registerToSocialmediasiteToolStripMenuItem.Click += new System.EventHandler(this.registerToSocialmediasiteToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 

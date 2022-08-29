@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Json;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace socialmediadatagenerator
@@ -83,7 +82,7 @@ namespace socialmediadatagenerator
                 ind++;
             }
 
-            return new PromptResult(results,lastPostName);
+            return new PromptResult(new List<string>(),results,lastPostName);
         }
 
         public static async Task<string> GetRedditToken(string username, string password, string clientID, string clientSecret) {

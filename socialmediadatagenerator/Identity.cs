@@ -18,7 +18,7 @@ namespace socialmediadatagenerator
         public string description { get; set; }
         public string profileImagePath { get; set; }
 
-        public List<string> posts { get; set; } = new List<string>();
+        public List<Post> posts { get; set; } = new List<Post>();
         public List<string> images { get; set; } = new List<string>();
 
 public Identity(string u = "",string f = "",string l = "") {
