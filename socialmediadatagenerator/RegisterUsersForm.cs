@@ -57,6 +57,9 @@ namespace socialmediadatagenerator {
                     //Then, get profile image and update profile
                     var avatarbase64 = HelperFunctions.ConvertToBase64String(File.OpenRead("profile_images\\" + user.profileImagePath));
 
+                    //Limit description size
+                    if (user.description.Length > 1024) user.description = user.description.Substring(0, 1024);
+
                     task = RegisterUsersAPI.SetProfile(user, session, avatarbase64, url);
                     data = await task;
 

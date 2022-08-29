@@ -78,7 +78,7 @@ namespace socialmediadatagenerator {
             request.Add("session", session);
             request.Add("title", post.title);
             request.Add("body", post.body);
-            request.Add("postLinkedImages", JsonValue.Parse(JsonSerializer.Serialize(linkedImages)));
+            request.Add("postLinkedImages", JsonValue.Parse(JsonSerializer.Serialize(linkedImages))); Console.WriteLine(request["body"].ToString());
 
             var dataJson = await MakeRequest(request, "addpost", url);
             return dataJson["success"];

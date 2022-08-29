@@ -232,7 +232,7 @@ namespace socialmediadatagenerator
 
             //Clean up values
             for (int i = 0; i < nameLists[category].Count; i++) {
-                nameLists[category][i] = nameLists[category][i].Trim();
+                nameLists[category][i] = nameLists[category][i].Trim().Replace("\\n", "\n");
             }
         }
 
@@ -276,7 +276,7 @@ namespace socialmediadatagenerator
             if (!File.Exists(filename)) return null;
 
             var rawStr = File.ReadAllText(filename);
-            
+
             return JsonSerializer.Deserialize<List<Post>>(rawStr);
         }
 
