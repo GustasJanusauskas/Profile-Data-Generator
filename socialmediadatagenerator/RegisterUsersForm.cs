@@ -32,7 +32,7 @@ namespace socialmediadatagenerator {
             progressBar1.Maximum = usersToRegister.Count;
         }
 
-        private async void SetupUsers() {
+        private async Task SetupUsers() {
             foreach (var user in usersToRegister) {
                 Invoke(new Action(() => {
                     nameLabel.Text = $"Registering user {user.userName}...";
@@ -69,22 +69,26 @@ namespace socialmediadatagenerator {
                     string tempImgStr;
                     List<string> usrImages = new List<string>();
                     foreach (var img in user.images) {
-                        tempImgStr = HelperFunctions.ConvertToBase64String(File.OpenRead(Path.GetFullPath(defaultdatadir + "\\" + img)));
+                        tempImgStr = HelperFunctions.ConvertToBase64String(File.OpenRead(img));
                         task = RegisterUsersAPI.UploadImage(session, tempImgStr, url);
                         data = await task;
                         if (data != null) usrImages.Add(data["filename"]);
                     }
 
                     //Then, add posts, including random uploaded images, if any present
-                    string tempImg;
+                    string tempImg = null;
                     int lastImgInd = 0;
                     foreach (var post in user.posts) {
-                        if (lastImgInd >= usrImages.Count) lastImgInd = 0;
-                        tempImg = usrImages[lastImgInd++];
+                        if (usrImages.Count > 0) {
+                            if (lastImgInd >= usrImages.Count) lastImgInd = 0;
+                            tempImg = usrImages[lastImgInd++];
 
-                        post.body += $"\n[img]{tempImg}[/img]";
+                            post.body += $"\n[img]{tempImg}[/img]";
+                        }
 
-                        await RegisterUsersAPI.AddPost(post, new List<string>(new string[] { tempImg }), session, url);
+                        if (post.title.Length > 256) post.title = post.title.Substring(0,256);
+                        if (post.body.Length > 4096) post.body = post.body.Substring(0,4096);
+                        await RegisterUsersAPI.AddPost(post, new List<string>(tempImg != null ? new string[] { tempImg } : new string[] { }), session, url);
                     }
                 }
                 else {
@@ -98,15 +102,15 @@ namespace socialmediadatagenerator {
             }
         }
 
-        private async void PerformUserActions() {
+        private async Task PerformUserActions() {
             //Get user ID's and all posts
             foreach (var user in usersToRegister) {
                 var task = RegisterUsersAPI.GetUserInfo(userSessions[user.userName], url);
                 var data = await task;
 
                 userIDs.Add(data["ID"]);
-                foreach (var id in data["posts"]) {
-                    userPostIDs.Add(int.Parse(id.ToString()));
+                for (int i = 0; i < data["posts"].Count; i++) {
+                    userPostIDs.Add(int.Parse(data["posts"][i]));
                 }
             }
 
@@ -160,8 +164,14 @@ namespace socialmediadatagenerator {
             if (url[url.Length - 1] == '/') url = url.Substring(0, url.Length - 1);
             if (!url.Contains("http://") && !url.Contains("https://")) url = sslCheckbox.Checked ? "https://" + url : "http://" + url;
 
-            SetupUsers();
-            PerformUserActions();
+            try {
+                await SetupUsers();
+                await PerformUserActions();
+            }
+            catch (System.Net.Http.HttpRequestException) {
+                MessageBox.Show("Connection error. Make sure the adress entered is correct.", "Connection error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             Invoke(new Action(() => {
                 nameLabel.Text = $"Registration complete! Registered {usersToRegister.Count} users.";
                 usersToRegister.Clear();

@@ -93,7 +93,7 @@ namespace socialmediadatagenerator
             result.firstName = nameLists[result.gender + "firstname"][random.Next(0, nameLists[result.gender + "firstname"].Count)];
             result.lastName = nameLists["lastname"][random.Next(0, nameLists["lastname"].Count)];
 
-            result.profileImagePath = Directory.GetFiles("profile_images\\")[random.Next(0,facesCount)];
+            result.profileImagePath = Path.GetFileName(Directory.GetFiles("profile_images\\")[random.Next(0,facesCount)]);
             //Get description
             if (pregenDescBox.Checked) {
                 result.description = nameLists["description"][random.Next(0, nameLists["description"].Count)];

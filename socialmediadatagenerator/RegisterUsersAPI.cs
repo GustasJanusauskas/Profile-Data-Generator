@@ -55,6 +55,7 @@ namespace socialmediadatagenerator {
             request.Add("lastName", user.lastName);
             request.Add("profileDesc", user.description);
             request.Add("avatar", avatarbase64);
+            request.Add("avatarPath", user.profileImagePath);
 
             var dataJson = await MakeRequest(request, "updateprofile", url);
             return dataJson;
@@ -113,7 +114,7 @@ namespace socialmediadatagenerator {
             return dataJson["success"];
         }
 
-        public static async Task<bool> AddComment(int postID, string session, string comment, string url) {
+        public static async Task<JsonValue> AddComment(int postID, string session, string comment, string url) {
             //Build request
             var request = new JsonObject();
             request.Add("session", session);
@@ -121,7 +122,7 @@ namespace socialmediadatagenerator {
             request.Add("content", comment);
 
             var dataJson = await MakeRequest(request, "addcomment", url);
-            return dataJson["success"];
+            return dataJson["comment_id"];
         }
     }
 }
