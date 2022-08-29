@@ -80,12 +80,15 @@ namespace socialmediadatagenerator
             int ind = 0;
             foreach (JsonObject post in dataJson["data"]["children"]) {
                 postText = post["data"]["title"].ToString();
+
+                if (ind == dataJson["data"]["children"].Count - 1) lastPostName = post["data"]["name"]; //Get last post name
                 //Ignore non prompt posts
                 if (HelperFunctions.StringContainsAny(postText, new string[] { "[PM]", "[PI]", "[OT]", "[MOD]" })) continue;
+
                 //Clear any flairs from post titles
                 postText = regex.Replace(postText,"").Trim();
                 results.Add(postText);
-                if (ind == dataJson["data"]["children"].Count - 1) lastPostName = post["data"]["name"];
+
                 ind++;
             }
 

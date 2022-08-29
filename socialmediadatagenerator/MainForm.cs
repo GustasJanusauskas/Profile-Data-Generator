@@ -153,7 +153,7 @@ namespace socialmediadatagenerator
             List<Post> result = new List<Post>();
             //Get reddit token and prompts
             redditToken = await RequestsAPI.GetRedditToken(redditUsernameBox.Text, redditPasswordBox.Text, redditIDBox.Text, redditSecretBox.Text);
-            var postPrompts = await RequestsAPI.GetRedditWritingPrompts(redditToken,amount,lastRedditPostName);
+            var postPrompts = await RequestsAPI.GetRedditWritingPrompts(redditToken,amount + 1,lastRedditPostName);
             bar.Maximum = postPrompts.prompts.Count;
             bar.Value = 0;
 
