@@ -33,7 +33,9 @@ namespace socialmediadatagenerator {
         }
 
         private async Task SetupUsers() {
-            foreach (var user in usersToRegister) {
+            Identity user;
+            for (int i = 0; i < usersToRegister.Count; i++) {
+                user = usersToRegister[i];
                 Invoke(new Action(() => {
                     nameLabel.Text = $"Registering user {user.userName}...";
                 }));
@@ -49,6 +51,7 @@ namespace socialmediadatagenerator {
 
                     if (!data["success"]) { //Critical step, ignore user if failed
                         usersToRegister.Remove(user);
+                        i--;
                         continue;
                     }
                     var session = data["session"];
@@ -96,6 +99,7 @@ namespace socialmediadatagenerator {
                 }
                 else {
                     usersToRegister.Remove(user);
+                    i--;
                     continue;
                 }
 
@@ -106,8 +110,13 @@ namespace socialmediadatagenerator {
         }
 
         private async Task PerformUserActions() {
+            Invoke(new Action(() => {
+                progressBar1.Value = 0;
+                nameLabel.Text = $"Getting user IDs...";
+            }));
             //Get user ID's and all posts
             foreach (var user in usersToRegister) {
+
                 var task = RegisterUsersAPI.GetUserInfo(userSessions[user.userName], url);
                 var data = await task;
 
@@ -121,6 +130,10 @@ namespace socialmediadatagenerator {
             Random rnd = new Random();
             int currentIndex;
             foreach (var user in usersToRegister) {
+                Invoke(new Action(() => {
+                    nameLabel.Text = $"Performing actions with {user.userName}...";
+                }));
+
                 //Add friends
                 currentIndex = 0;
                 while (true) {
@@ -133,7 +146,7 @@ namespace socialmediadatagenerator {
                 currentIndex = 0;
                 while (true) {
                     await RegisterUsersAPI.LikePost(userPostIDs[currentIndex], userSessions[user.userName], url);
-                    currentIndex += rnd.Next(1, 4);
+                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 120));
                     if (currentIndex >= userPostIDs.Count) break;
                 }
 
@@ -141,11 +154,18 @@ namespace socialmediadatagenerator {
                 currentIndex = 0;
                 while (true) {
                     await RegisterUsersAPI.AddComment(userPostIDs[currentIndex], userSessions[user.userName],"Sample comment.", url);
-                    currentIndex += rnd.Next(1, 6);
+                    currentIndex += rnd.Next(2, 3 + (userPostIDs.Count / 240));
                     if (currentIndex >= userPostIDs.Count) break;
                 }
+
+                Invoke(new Action(() => {
+                    progressBar1.Value++;
+                }));
             }
 
+            Invoke(new Action(() => {
+                nameLabel.Text = $"Accepting friend requests...";
+            }));
             //Get and accept friend requests
             foreach (var user in usersToRegister) {
                 var task = RegisterUsersAPI.GetUserInfo(userSessions[user.userName], url);

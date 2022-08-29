@@ -387,10 +387,11 @@ namespace socialmediadatagenerator
                 temp = await task;
                 Invoke(new Action(() => {
                     generatedUsers.Add(temp);
-                    UpdatePreviewList();
+                    if (!pregenPostsBox.Checked && !pregenDescBox.Checked) UpdatePreviewList();
                     generateBar.Value++;
                 }));
             }
+            UpdatePreviewList();
             generateBar.Value = 0;
             mainTaskLabel.Text = "Done!";
         }

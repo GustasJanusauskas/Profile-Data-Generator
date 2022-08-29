@@ -72,7 +72,7 @@ namespace socialmediadatagenerator
 
             var readTask = data.Content.ReadAsStringAsync();
             var dataStr = await readTask;
-            var dataJson = JsonObject.Parse(dataStr); Console.WriteLine(dataStr);
+            var dataJson = JsonObject.Parse(dataStr);
 
             var regex = new Regex(@"(\[WP\]|\[SP\]|\[EU\]|\[CW\]|\[TT\]|\[MP\]|\[IP\]|\[RF\])");
             string lastPostName = "";
