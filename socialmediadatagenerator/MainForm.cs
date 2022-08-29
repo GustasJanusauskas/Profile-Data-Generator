@@ -48,6 +48,9 @@ namespace socialmediadatagenerator
             if (Directory.Exists("profile_images")) facesCount = Directory.GetFiles("profile_images\\").Length;
             imagesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")).Length;
 
+            Console.WriteLine(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")));
+            Console.WriteLine(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")).Length);
+
             //Config elements
             openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
             openFileDialog1.InitialDirectory = defaultDataDir;
@@ -269,7 +272,7 @@ namespace socialmediadatagenerator
             if (!Directory.Exists("lists") || !File.Exists("lists\\" + filename)) return null;
 
             var rawStr = File.ReadAllText("lists\\" + filename);
-
+            
             return JsonSerializer.Deserialize<List<Post>>(rawStr);
         }
 
