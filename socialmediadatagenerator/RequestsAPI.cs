@@ -28,7 +28,7 @@ namespace socialmediadatagenerator
             }
         }
 
-        public static async Task<string> GetOpenAIResponse(string prompt,string token) {
+        public static async Task<string> GetOpenAIResponse(string prompt,string token, int maxtokens = 512) {
             if (token.Length < 51) return null;
             //Headers
             client.DefaultRequestHeaders.Clear();
@@ -38,12 +38,19 @@ namespace socialmediadatagenerator
             var request = new JsonObject();
             request.Add("model","text-davinci-002");
             request.Add("prompt", prompt);
-            request.Add("temperature",0.95);
-            request.Add("max_tokens",512);
+            request.Add("temperature",0.9);
+            request.Add("max_tokens",maxtokens);
 
-            var content = new StringContent(request.ToString(), Encoding.UTF8, "application/json");
-            var response = client.PostAsync("https://api.openai.com/v1/completions",content);
-            var data = await response;
+            HttpResponseMessage data = null;
+            try {
+                var content = new StringContent(request.ToString(), Encoding.UTF8, "application/json");
+                var response = client.PostAsync("https://api.openai.com/v1/completions", content);
+                data = await response;
+            }
+            catch(System.Net.Http.HttpRequestException) {
+                Console.WriteLine("HttpRequestException thrown at OpenAI request, OpenAI might be down.");
+                return "";
+            }
 
             var readTask = data.Content.ReadAsStringAsync();
             var dataStr = await readTask;

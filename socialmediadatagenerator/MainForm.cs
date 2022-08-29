@@ -100,7 +100,7 @@ namespace socialmediadatagenerator
             }
             else {
                 result.description = descriptionPrompts[random.Next(0, descriptionPrompts.Length)];
-                var descTask = RequestsAPI.GetOpenAIResponse(result.description, tokenBox.Text);
+                var descTask = RequestsAPI.GetOpenAIResponse(result.description, tokenBox.Text, 256);
                 result.description += await descTask;
             }
             //Add posts
@@ -161,10 +161,10 @@ namespace socialmediadatagenerator
             string titlePrompt;
             string tempTitle;
             foreach (var prompt in postPrompts.prompts) {
-                tempPost = await RequestsAPI.GetOpenAIResponse("Write a story with the prompt:\n" + prompt,tokenBox.Text);
+                tempPost = await RequestsAPI.GetOpenAIResponse("Write a story with the prompt:\n" + prompt,tokenBox.Text,512);
 
                 titlePrompt = tempPost.IndexOf('.') > 255 ? tempPost.Substring(0, 255) + ".\n" : tempPost.Substring(0, tempPost.IndexOf('.') + 1) + "\n";
-                tempTitle = await RequestsAPI.GetOpenAIResponse("Title this story:\n" + titlePrompt,tokenBox.Text);
+                tempTitle = await RequestsAPI.GetOpenAIResponse("Title this story:\n" + titlePrompt,tokenBox.Text,64);
 
                 if (tempPost == null || tempTitle == null) continue;
                 result.Add(new Post(tempTitle.Trim(), tempPost.Trim()));

@@ -394,6 +394,11 @@ namespace socialmediadatagenerator
             // genPostsNumeric
             // 
             this.genPostsNumeric.Location = new System.Drawing.Point(116, 215);
+            this.genPostsNumeric.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
             this.genPostsNumeric.Minimum = new decimal(new int[] {
             1,
             0,
