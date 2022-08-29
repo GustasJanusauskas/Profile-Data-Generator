@@ -73,6 +73,7 @@ namespace socialmediadatagenerator
             this.registerToSocialmediasiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.importFromJsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
             this.nameBox.SuspendLayout();
@@ -512,6 +513,7 @@ namespace socialmediadatagenerator
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importFromJsonToolStripMenuItem,
             this.exportToJsonToolStripMenuItem,
             this.registerToSocialmediasiteToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -538,6 +540,13 @@ namespace socialmediadatagenerator
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.aboutToolStripMenuItem.Text = "About..";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // importFromJsonToolStripMenuItem
+            // 
+            this.importFromJsonToolStripMenuItem.Name = "importFromJsonToolStripMenuItem";
+            this.importFromJsonToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.importFromJsonToolStripMenuItem.Text = "Import from Json..";
+            this.importFromJsonToolStripMenuItem.Click += new System.EventHandler(this.importFromJsonToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -625,6 +634,7 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.ToolStripMenuItem registerToSocialmediasiteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem importFromJsonToolStripMenuItem;
     }
 }
 

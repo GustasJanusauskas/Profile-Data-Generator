@@ -75,8 +75,9 @@ namespace socialmediadatagenerator
             //Read default namelists
             foreach (var file in Directory.GetFiles(defaultDataDir)) {
                 if (new string[] { ".txt",".csv" }.Contains(Path.GetExtension(file))) ReadNameList(File.ReadAllText(file), Path.GetFileName(file).Replace(".txt", "").Replace(".csv",""),Path.GetExtension(file));
-                else if (new string[] { ".json" }.Contains(Path.GetExtension(file))) pregenPosts = LoadListJson(file);
             }
+            //Read pregenerated posts
+            pregenPosts = LoadListJson(Path.GetFullPath(defaultDataDir + "\\post.json"));
         }
 
         int usernameInd = 0;
@@ -113,7 +114,7 @@ namespace socialmediadatagenerator
                 }
             }
             //Add images
-            total = random.Next(0, 3);
+            total = random.Next(0, 4);
             for (int i = 0; i < total; i++) {
                 result.images.Add(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\"))[random.Next(0, imagesCount)]);
             }
@@ -272,9 +273,9 @@ namespace socialmediadatagenerator
 
         private List<Post> LoadListJson(string filename) {
             if (!filename.Contains(".json")) filename += ".json";
-            if (!Directory.Exists("lists") || !File.Exists("lists\\" + filename)) return null;
+            if (!File.Exists(filename)) return null;
 
-            var rawStr = File.ReadAllText("lists\\" + filename);
+            var rawStr = File.ReadAllText(filename);
             
             return JsonSerializer.Deserialize<List<Post>>(rawStr);
         }
@@ -423,7 +424,7 @@ namespace socialmediadatagenerator
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
-            var temp = LoadListJson("genPosts.json");
+            var temp = LoadListJson("lists\\genPosts.json");
             generatedPosts = temp != null ? temp : generatedPosts;
             lastRedditPostName = File.Exists("lists\\genParams.txt") ? File.ReadAllText("lists\\genParams.txt") : "";
         }
@@ -473,6 +474,10 @@ namespace socialmediadatagenerator
 
             var registerForm = new RegisterUsersForm(generatedUsers,defaultDataDir);
             registerForm.ShowDialog();
+        }
+
+        private void importFromJsonToolStripMenuItem_Click(object sender, EventArgs e) {
+
         }
     }
 }
