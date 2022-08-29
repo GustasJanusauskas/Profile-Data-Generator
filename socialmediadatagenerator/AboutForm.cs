@@ -13,5 +13,9 @@ namespace socialmediadatagenerator {
         public AboutForm() {
             InitializeComponent();
         }
+
+        private void richTextBox1_LinkClicked(object sender, LinkClickedEventArgs e) {
+            System.Diagnostics.Process.Start("explorer.exe",e.LinkText);
+        }
     }
 }
