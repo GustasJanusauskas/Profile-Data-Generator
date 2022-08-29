@@ -82,7 +82,7 @@ namespace socialmediadatagenerator
                 ind++;
             }
 
-            return new PromptResult(new List<string>(),results,lastPostName);
+            return new PromptResult(null,results,lastPostName);
         }
 
         public static async Task<string> GetRedditToken(string username, string password, string clientID, string clientSecret) {

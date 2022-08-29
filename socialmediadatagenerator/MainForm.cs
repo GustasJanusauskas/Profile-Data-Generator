@@ -146,7 +146,7 @@ namespace socialmediadatagenerator
         }
 
         private async Task<PromptResult> GeneratePosts(int amount = 100, ProgressBar bar = null) {
-            List<string> result = new List<string>();
+            List<Post> result = new List<Post>();
             //Get reddit token and prompts
             redditToken = await RequestsAPI.GetRedditToken(redditUsernameBox.Text, redditPasswordBox.Text, redditIDBox.Text, redditSecretBox.Text);
             var postPrompts = await RequestsAPI.GetRedditWritingPrompts(redditToken,amount,lastRedditPostName);
@@ -154,13 +154,16 @@ namespace socialmediadatagenerator
             bar.Value = 0;
 
             string tempPost;
+            string tempTitle;
             foreach (var prompt in postPrompts.prompts) {
                 tempPost = await RequestsAPI.GetOpenAIResponse("Write a story with the prompt:\n" + prompt,tokenBox.Text);
-                if (tempPost == null) continue; var avatarbase64 = HelperFunctions.ConvertToBase64String(File.OpenRead("profile_images\\" + user.profileImagePath));
-                result.Add(tempPost.Trim());
+                tempTitle = await RequestsAPI.GetOpenAIResponse("Title this story:\n" + tempPost.Substring(0,256),tokenBox.Text);
+
+                if (tempPost == null || tempTitle == null) continue;
+                result.Add(new Post(tempTitle.Trim(), tempPost.Trim()));
                 bar.Value++;
             }
-            return new PromptResult(result,postPrompts.prompts,postPrompts.lastPromptName);
+            return new PromptResult(result,null,postPrompts.lastPromptName);
         }
 
         private void UpdatePreviewList() {
@@ -401,7 +404,7 @@ namespace socialmediadatagenerator
             Invoke(new Action(() => {
                 lastRedditPostName = newPosts.lastPromptName;
                 for (int i = 0; i < newPosts.posts.Count; i++) {
-                    generatedPosts.Add(new Post(newPosts.prompts[i],newPosts.posts[i]));
+                    generatedPosts.Add(newPosts.posts[i]);
                 }
             }));
             mainProgBar.Value = 0;

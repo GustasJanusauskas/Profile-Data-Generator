@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace socialmediadatagenerator {
     class PromptResult {
         public List<string> prompts;
-        public List<string> posts;
+        public List<Post> posts;
         public string lastPromptName;
 
-        public PromptResult(List<string> postsIn, List<string> promptsIn,string lp) {
+        public PromptResult(List<Post> postsIn, List<string> promptsIn,string lp) {
             prompts = promptsIn;
             posts = postsIn;
             lastPromptName = lp;
