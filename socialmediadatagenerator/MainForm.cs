@@ -24,6 +24,7 @@ namespace socialmediadatagenerator
 
         Random random = new Random();
         int facesCount = 0;
+        int imagesCount = 0;
 
         string redditToken = "";
         string lastRedditPostName = "";
@@ -37,15 +38,17 @@ namespace socialmediadatagenerator
         }
 
         private void Init() {
-            if (!Directory.Exists("profile_images")) return;
-
-            //Count already generated faces so we can use them later
-            facesCount = Directory.GetFiles("profile_images\\").Length;
             #if DEBUG
                 defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "..\\..\\..\\..\\defaultdata");
             #else
                 defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "\\defaultdata");
             #endif
+
+            //Count already generated faces so we can use them later
+            if (Directory.Exists("profile_images")) facesCount = Directory.GetFiles("profile_images\\").Length;
+            imagesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")).Length;
+
+            //Config elements
             openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
             openFileDialog1.InitialDirectory = defaultDataDir;
 
@@ -99,7 +102,7 @@ namespace socialmediadatagenerator
                 result.description = await descTask;
             }
             //Add posts
-            for (int i = 0; i < random.Next(0,3); i++) {
+            for (int i = 0; i < random.Next(0,6); i++) {
                 if (pregenPostsBox.Checked) {
                     result.posts.Add(pregenPosts[random.Next(0, pregenPosts.Count)]);
                 }
@@ -107,7 +110,10 @@ namespace socialmediadatagenerator
                     result.posts.Add(generatedPosts[random.Next(0, generatedPosts.Count)]);
                 }
             }
-
+            //Add images
+            for (int i = 0; i < random.Next(0, 3); i++) {
+                result.images.Add(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\"))[random.Next(0, imagesCount)]);
+            }
             return result;
         }
         
