@@ -48,9 +48,6 @@ namespace socialmediadatagenerator
             if (Directory.Exists("profile_images")) facesCount = Directory.GetFiles("profile_images\\").Length;
             imagesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")).Length;
 
-            Console.WriteLine(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")));
-            Console.WriteLine(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")).Length);
-
             //Config elements
             openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
             openFileDialog1.InitialDirectory = defaultDataDir;
@@ -101,11 +98,13 @@ namespace socialmediadatagenerator
                 result.description = nameLists["description"][random.Next(0, nameLists["description"].Count)];
             }
             else {
-                var descTask = RequestsAPI.GetOpenAIResponse(descriptionPrompts[random.Next(0, descriptionPrompts.Length)], tokenBox.Text);
-                result.description = await descTask;
+                result.description = descriptionPrompts[random.Next(0, descriptionPrompts.Length)];
+                var descTask = RequestsAPI.GetOpenAIResponse(result.description, tokenBox.Text);
+                result.description += await descTask;
             }
             //Add posts
-            for (int i = 0; i < random.Next(0,6); i++) {
+            int total = random.Next(0, 6);
+            for (int i = 0; i < total; i++) {
                 if (pregenPostsBox.Checked) {
                     result.posts.Add(pregenPosts[random.Next(0, pregenPosts.Count)]);
                 }
@@ -114,7 +113,8 @@ namespace socialmediadatagenerator
                 }
             }
             //Add images
-            for (int i = 0; i < random.Next(0, 3); i++) {
+            total = random.Next(0, 3);
+            for (int i = 0; i < total; i++) {
                 result.images.Add(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\"))[random.Next(0, imagesCount)]);
             }
             return result;
@@ -157,10 +157,13 @@ namespace socialmediadatagenerator
             bar.Value = 0;
 
             string tempPost;
+            string titlePrompt;
             string tempTitle;
             foreach (var prompt in postPrompts.prompts) {
                 tempPost = await RequestsAPI.GetOpenAIResponse("Write a story with the prompt:\n" + prompt,tokenBox.Text);
-                tempTitle = await RequestsAPI.GetOpenAIResponse("Title this story:\n" + tempPost.Substring(0,256),tokenBox.Text);
+
+                titlePrompt = tempPost.IndexOf('.') > 255 ? tempPost.Substring(0, 255) + ".\n" : tempPost.Substring(0, tempPost.IndexOf('.') + 1) + "\n";
+                tempTitle = await RequestsAPI.GetOpenAIResponse("Title this story:\n" + titlePrompt,tokenBox.Text);
 
                 if (tempPost == null || tempTitle == null) continue;
                 result.Add(new Post(tempTitle.Trim(), tempPost.Trim()));
