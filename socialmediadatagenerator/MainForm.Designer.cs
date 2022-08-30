@@ -69,11 +69,12 @@ namespace socialmediadatagenerator
             this.mainTaskLabel = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importFromJsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToJsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registerToSocialmediasiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.importFromJsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialogJson = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
             this.nameBox.SuspendLayout();
@@ -265,10 +266,6 @@ namespace socialmediadatagenerator
             this.previewListView.Size = new System.Drawing.Size(306, 355);
             this.previewListView.TabIndex = 12;
             this.previewListView.UseCompatibleStateImageBehavior = false;
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // generationGroup
             // 
@@ -525,6 +522,13 @@ namespace socialmediadatagenerator
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // importFromJsonToolStripMenuItem
+            // 
+            this.importFromJsonToolStripMenuItem.Name = "importFromJsonToolStripMenuItem";
+            this.importFromJsonToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.importFromJsonToolStripMenuItem.Text = "Import from Json..";
+            this.importFromJsonToolStripMenuItem.Click += new System.EventHandler(this.importFromJsonToolStripMenuItem_Click);
+            // 
             // exportToJsonToolStripMenuItem
             // 
             this.exportToJsonToolStripMenuItem.Name = "exportToJsonToolStripMenuItem";
@@ -545,13 +549,6 @@ namespace socialmediadatagenerator
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.aboutToolStripMenuItem.Text = "About..";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // importFromJsonToolStripMenuItem
-            // 
-            this.importFromJsonToolStripMenuItem.Name = "importFromJsonToolStripMenuItem";
-            this.importFromJsonToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.importFromJsonToolStripMenuItem.Text = "Import from Json..";
-            this.importFromJsonToolStripMenuItem.Click += new System.EventHandler(this.importFromJsonToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -640,6 +637,7 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem importFromJsonToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialogJson;
     }
 }
 

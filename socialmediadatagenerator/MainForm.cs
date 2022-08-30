@@ -52,7 +52,10 @@ namespace socialmediadatagenerator
             openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
             openFileDialog1.InitialDirectory = defaultDataDir;
 
-            saveFileDialog1.Filter = "Text files|*.txt";
+            openFileDialogJson.Filter = "Json files|*.json";
+            openFileDialogJson.InitialDirectory = Directory.GetCurrentDirectory();
+
+            saveFileDialog1.Filter = "Json files|*.json";
             saveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory();
 
             previewListView.View = View.Details;
@@ -470,11 +473,7 @@ namespace socialmediadatagenerator
             }
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
-                string toWrite = "";
-                foreach (var user in generatedUsers) {
-                    toWrite += JsonSerializer.Serialize(user, new JsonSerializerOptions { WriteIndented = true } );
-                }
-                File.WriteAllText(saveFileDialog1.FileName,toWrite);
+                File.WriteAllText(saveFileDialog1.FileName, JsonSerializer.Serialize(generatedUsers, new JsonSerializerOptions { WriteIndented = true }));
             }
         }
 
@@ -489,7 +488,15 @@ namespace socialmediadatagenerator
         }
 
         private void importFromJsonToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (openFileDialogJson.ShowDialog() == DialogResult.OK) {
+                List<Identity> importUsers = JsonSerializer.Deserialize<List<Identity>>(File.ReadAllText(openFileDialogJson.FileName));
 
+                foreach (var usr in importUsers) {
+                    generatedUsers.Add(usr);
+                }
+
+                UpdatePreviewList();
+            }
         }
     }
 }
