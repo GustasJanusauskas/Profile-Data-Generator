@@ -153,10 +153,10 @@ namespace socialmediadatagenerator {
                     if (currentIndex >= userPostIDs.Count) break;
                 }
 
-                //Add comments to posts TODO: generate and use comments
+                //Add comments to posts
                 currentIndex = 0;
                 while (true) {
-                    await RegisterUsersAPI.AddComment(userPostIDs[currentIndex], userSessions[user.userName],"Sample comment.", url);
+                    await RegisterUsersAPI.AddComment(userPostIDs[currentIndex], userSessions[user.userName],user.comments[rnd.Next(0, user.comments.Count)], url);
                     currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 5)); //~10 comments/user at 100 users
                     if (currentIndex >= userPostIDs.Count) break;
                 }

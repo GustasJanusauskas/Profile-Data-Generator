@@ -118,6 +118,12 @@ namespace socialmediadatagenerator
             for (int i = 0; i < total; i++) {
                 result.images.Add(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\"))[random.Next(0, imagesCount)]);
             }
+            //Add comments
+            total = random.Next(0, 11);
+            for (int i = 0; i < total; i++) {
+                result.comments.Add(nameLists["comment"][random.Next(0, nameLists["comment"].Count)]);
+            }
+
             return result;
         }
         
@@ -233,6 +239,11 @@ namespace socialmediadatagenerator
             //Clean up values
             for (int i = 0; i < nameLists[category].Count; i++) {
                 nameLists[category][i] = nameLists[category][i].Trim().Replace("\\n", "\n");
+                //Delete empty values
+                if (nameLists[category][i].Length == 0) {
+                    nameLists[category].RemoveAt(i);
+                    i--;
+                }
             }
         }
 

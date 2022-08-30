@@ -20,8 +20,9 @@ namespace socialmediadatagenerator
 
         public List<Post> posts { get; set; } = new List<Post>();
         public List<string> images { get; set; } = new List<string>();
+        public List<string> comments { get; set; } = new List<string>();
 
-public Identity(string u = "",string f = "",string l = "") {
+        public Identity(string u = "",string f = "",string l = "") {
             userName = u;
             firstName = f;
             lastName = l;
