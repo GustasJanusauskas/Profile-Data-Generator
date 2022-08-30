@@ -141,7 +141,7 @@ namespace socialmediadatagenerator {
                 currentIndex = 0;
                 while (true) {
                     await RegisterUsersAPI.AddFriend(userIDs[currentIndex], userSessions[user.userName], url);
-                    currentIndex += rnd.Next(1, 2 + (userIDs.Count / 20));
+                    currentIndex += rnd.Next(1, 2 + (userIDs.Count / 2)); //~4 friends/ user at 100 users
                     if (currentIndex >= userIDs.Count) break;
                 }
 
@@ -149,7 +149,7 @@ namespace socialmediadatagenerator {
                 currentIndex = 0;
                 while (true) {
                     await RegisterUsersAPI.LikePost(userPostIDs[currentIndex], userSessions[user.userName], url);
-                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 120));
+                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 10)); //~16 likes/user at 100 users
                     if (currentIndex >= userPostIDs.Count) break;
                 }
 
@@ -157,7 +157,7 @@ namespace socialmediadatagenerator {
                 currentIndex = 0;
                 while (true) {
                     await RegisterUsersAPI.AddComment(userPostIDs[currentIndex], userSessions[user.userName],"Sample comment.", url);
-                    currentIndex += rnd.Next(2, 3 + (userPostIDs.Count / 240));
+                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 5)); //~10 comments/user at 100 users
                     if (currentIndex >= userPostIDs.Count) break;
                 }
 
