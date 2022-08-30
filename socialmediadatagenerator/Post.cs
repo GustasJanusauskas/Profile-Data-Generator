@@ -16,5 +16,9 @@ namespace socialmediadatagenerator {
             this.title = title;
             this.body = body;
         }
+
+        public Post Clone() {
+            return (Post)this.MemberwiseClone();
+        }
     }
 }

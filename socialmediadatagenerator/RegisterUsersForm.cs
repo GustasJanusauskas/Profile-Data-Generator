@@ -84,9 +84,11 @@ namespace socialmediadatagenerator {
                     }
 
                     //Then, add posts, including random uploaded images, if any present
+                    Post post;
                     string tempImg;
                     int lastImgInd = 0;
-                    foreach (Post post in user.posts) {
+                    for (int j = 0; j < user.posts.Count; j++) {
+                        post = user.posts[j].Clone();
                         tempImg = null;
                         if (usrImages.Count > 0) {
                             if (lastImgInd >= usrImages.Count) lastImgInd = 0;
@@ -156,6 +158,8 @@ namespace socialmediadatagenerator {
                 //Add comments to posts
                 currentIndex = 0;
                 while (true) {
+                    if (user.comments.Count == 0) break;
+
                     await RegisterUsersAPI.AddComment(userPostIDs[currentIndex], userSessions[user.userName],user.comments[rnd.Next(0, user.comments.Count)], url);
                     currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 5)); //~10 comments/user at 100 users
                     if (currentIndex >= userPostIDs.Count) break;
@@ -173,7 +177,6 @@ namespace socialmediadatagenerator {
             foreach (var user in usersToRegister) {
                 var task = RegisterUsersAPI.GetUserInfo(userSessions[user.userName], url);
                 var data = await task;
-                Console.WriteLine(data["friendRequests"].ToString());
 
                 for (int i = 0; i < data["friendRequests"].Count; i++) {
                     await RegisterUsersAPI.AddFriend(int.Parse(data["friendRequests"][i]),userSessions[user.userName],url);
