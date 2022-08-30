@@ -17,7 +17,7 @@ namespace socialmediadatagenerator {
             client.DefaultRequestHeaders.Clear();
 
             var content = new StringContent(request.ToString(), Encoding.UTF8, "application/json");
-            var response = client.PutAsync($"{url}/{subUrl}", content);
+            var response = client.PostAsync($"{url}/{subUrl}", content);
             var data = await response;
 
             var readTask = data.Content.ReadAsStringAsync();

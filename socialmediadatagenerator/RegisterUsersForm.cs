@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using System.Json;
+using System.Text.Json;
 
 namespace socialmediadatagenerator {
     public partial class RegisterUsersForm : Form {
@@ -82,9 +84,10 @@ namespace socialmediadatagenerator {
                     }
 
                     //Then, add posts, including random uploaded images, if any present
-                    string tempImg = null;
+                    string tempImg;
                     int lastImgInd = 0;
-                    foreach (var post in user.posts) {
+                    foreach (Post post in user.posts) {
+                        tempImg = null;
                         if (usrImages.Count > 0) {
                             if (lastImgInd >= usrImages.Count) lastImgInd = 0;
                             tempImg = usrImages[lastImgInd++];
@@ -170,10 +173,10 @@ namespace socialmediadatagenerator {
             foreach (var user in usersToRegister) {
                 var task = RegisterUsersAPI.GetUserInfo(userSessions[user.userName], url);
                 var data = await task;
-                List<int> fRequests = new List<int>();
+                Console.WriteLine(data["friendRequests"].ToString());
 
-                foreach (int req in data["friendRequests"]) {
-                    await RegisterUsersAPI.AddFriend(req,userSessions[user.userName],url);
+                for (int i = 0; i < data["friendRequests"].Count; i++) {
+                    await RegisterUsersAPI.AddFriend(int.Parse(data["friendRequests"][i]),userSessions[user.userName],url);
                 }
             }
         }
