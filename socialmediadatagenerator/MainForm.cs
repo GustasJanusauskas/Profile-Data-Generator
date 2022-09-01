@@ -26,6 +26,10 @@ namespace socialmediadatagenerator
         int facesCount = 0;
         int imagesCount = 0;
 
+        int pregenMaleFacesCount = 0;
+        int pregenFemaleFacesCount = 0;
+        int pregenOtherFacesCount = 0;
+
         string redditToken = "";
         string lastRedditPostName = "";
 
@@ -47,6 +51,9 @@ namespace socialmediadatagenerator
             //Count already generated faces so we can use them later
             if (Directory.Exists("profile_images")) facesCount = Directory.GetFiles("profile_images\\").Length;
             imagesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")).Length;
+            pregenMaleFacesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\male\\")).Length;
+            pregenFemaleFacesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\female\\")).Length;
+            pregenOtherFacesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\other\\")).Length;
 
             //Config elements
             openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
@@ -69,6 +76,9 @@ namespace socialmediadatagenerator
             previewListView.Columns.Add("First name");
             previewListView.Columns.Add("Last name");
             previewListView.Columns.Add("Description length");
+            previewListView.Columns.Add("Posts");
+            previewListView.Columns.Add("Images");
+            previewListView.Columns.Add("Comments");
             previewListView.Columns.Add("Profile image");
 
             if (!Directory.Exists(defaultDataDir)) {
@@ -96,7 +106,14 @@ namespace socialmediadatagenerator
             result.firstName = nameLists[result.gender + "firstname"][random.Next(0, nameLists[result.gender + "firstname"].Count)];
             result.lastName = nameLists["lastname"][random.Next(0, nameLists["lastname"].Count)];
 
-            result.profileImagePath = Path.GetFileName(Directory.GetFiles("profile_images\\")[random.Next(0,facesCount)]);
+            //Set profile image
+            if (pregenProfileImgBox.Checked) {
+                if (result.gender == "male") result.profileImagePath = Path.GetFullPath(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\male\\"))[random.Next(0, pregenMaleFacesCount)]);
+                else if (result.gender == "female") result.profileImagePath = Path.GetFullPath(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\female\\"))[random.Next(0, pregenFemaleFacesCount)]);
+                else result.profileImagePath = Path.GetFullPath(Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\other\\"))[random.Next(0, pregenOtherFacesCount)]);
+            }
+            else result.profileImagePath = Path.GetFullPath(Directory.GetFiles("profile_images\\")[random.Next(0,facesCount)]);
+
             //Get description
             if (pregenDescBox.Checked) {
                 result.description = nameLists["description"][random.Next(0, nameLists["description"].Count)];
@@ -197,6 +214,9 @@ namespace socialmediadatagenerator
                 temp.SubItems.Add(user.firstName);
                 temp.SubItems.Add(user.lastName);
                 temp.SubItems.Add(user.description != null ? user.description.Length.ToString() : "-");
+                temp.SubItems.Add(user.posts.Count.ToString());
+                temp.SubItems.Add(user.images.Count.ToString());
+                temp.SubItems.Add(user.comments.Count.ToString());
                 temp.SubItems.Add(user.profileImagePath);
 
                 previewListView.Items.Add(temp);
@@ -377,7 +397,7 @@ namespace socialmediadatagenerator
                 MessageBox.Show("Please generate some posts first.", "Missing posts", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (facesCount == 0) {
+            if (!pregenProfileImgBox.Checked && facesCount == 0) {
                 MessageBox.Show("Please generate some profile images first.", "Missing profile images", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -497,6 +517,11 @@ namespace socialmediadatagenerator
 
                 UpdatePreviewList();
             }
+        }
+
+        private void pregenProfileImgBox_CheckedChanged(object sender, EventArgs e) {
+            generateFacesBtn.Enabled = !pregenProfileImgBox.Checked;
+            facesNumeric.Enabled = !pregenProfileImgBox.Checked;
         }
     }
 }

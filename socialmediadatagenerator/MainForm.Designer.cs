@@ -75,6 +75,7 @@ namespace socialmediadatagenerator
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialogJson = new System.Windows.Forms.OpenFileDialog();
+            this.pregenProfileImgBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
             this.nameBox.SuspendLayout();
@@ -269,6 +270,7 @@ namespace socialmediadatagenerator
             // 
             // generationGroup
             // 
+            this.generationGroup.Controls.Add(this.pregenProfileImgBox);
             this.generationGroup.Controls.Add(this.pregenPostsBox);
             this.generationGroup.Controls.Add(this.pregenDescBox);
             this.generationGroup.Controls.Add(this.generateBar);
@@ -285,7 +287,7 @@ namespace socialmediadatagenerator
             // pregenPostsBox
             // 
             this.pregenPostsBox.AutoSize = true;
-            this.pregenPostsBox.Location = new System.Drawing.Point(7, 97);
+            this.pregenPostsBox.Location = new System.Drawing.Point(6, 100);
             this.pregenPostsBox.Name = "pregenPostsBox";
             this.pregenPostsBox.Size = new System.Drawing.Size(142, 17);
             this.pregenPostsBox.TabIndex = 13;
@@ -296,7 +298,7 @@ namespace socialmediadatagenerator
             // pregenDescBox
             // 
             this.pregenDescBox.AutoSize = true;
-            this.pregenDescBox.Location = new System.Drawing.Point(6, 120);
+            this.pregenDescBox.Location = new System.Drawing.Point(6, 122);
             this.pregenDescBox.Name = "pregenDescBox";
             this.pregenDescBox.Size = new System.Drawing.Size(173, 17);
             this.pregenDescBox.TabIndex = 15;
@@ -550,6 +552,17 @@ namespace socialmediadatagenerator
             this.aboutToolStripMenuItem.Text = "About..";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // pregenProfileImgBox
+            // 
+            this.pregenProfileImgBox.AutoSize = true;
+            this.pregenProfileImgBox.Location = new System.Drawing.Point(7, 77);
+            this.pregenProfileImgBox.Name = "pregenProfileImgBox";
+            this.pregenProfileImgBox.Size = new System.Drawing.Size(181, 17);
+            this.pregenProfileImgBox.TabIndex = 16;
+            this.pregenProfileImgBox.Text = "Use pre-generated profile images";
+            this.pregenProfileImgBox.UseVisualStyleBackColor = true;
+            this.pregenProfileImgBox.CheckedChanged += new System.EventHandler(this.pregenProfileImgBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -638,6 +651,7 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem importFromJsonToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialogJson;
+        private System.Windows.Forms.CheckBox pregenProfileImgBox;
     }
 }
 
