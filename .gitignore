@@ -8,6 +8,7 @@
 *.sublime-workspace
 
 #Builds
+packages/*
 socialmediadatagenerator/bin/*
 socialmediadatagenerator/obj/*
 
