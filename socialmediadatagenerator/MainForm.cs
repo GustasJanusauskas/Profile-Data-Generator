@@ -333,6 +333,8 @@ namespace socialmediadatagenerator
                 facesCount = times > facesCount ? times : facesCount;
                 generateFacesBtn.Enabled = true;
             });
+            generateFacesBtn.Enabled = true;
+            facesBar.Value = 0;
         }
 
         private void nameListBtn_Click(object sender, EventArgs e) {

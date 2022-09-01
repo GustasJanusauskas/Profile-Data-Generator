@@ -140,7 +140,7 @@ namespace socialmediadatagenerator {
                 }));
 
                 //Add friends
-                currentIndex = 0;
+                currentIndex = rnd.Next(0, 1 + (userIDs.Count / 2));
                 while (true) {
                     await RegisterUsersAPI.AddFriend(userIDs[currentIndex], userSessions[user.userName], url);
                     currentIndex += rnd.Next(1, 2 + (userIDs.Count / 2)); //~4 friends/ user at 100 users
@@ -148,20 +148,20 @@ namespace socialmediadatagenerator {
                 }
 
                 //Like posts
-                currentIndex = 0;
+                currentIndex = rnd.Next(0,1 + (userPostIDs.Count / 25));
                 while (true) {
                     await RegisterUsersAPI.LikePost(userPostIDs[currentIndex], userSessions[user.userName], url);
-                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 10)); //~16 likes/user at 100 users
+                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 25)); //~40 likes/user at 200 posts (~100 users)
                     if (currentIndex >= userPostIDs.Count) break;
                 }
 
                 //Add comments to posts
-                currentIndex = 0;
+                currentIndex = rnd.Next(0, 1 + (userPostIDs.Count / 5)); ;
                 while (true) {
                     if (user.comments.Count == 0) break;
 
                     await RegisterUsersAPI.AddComment(userPostIDs[currentIndex], userSessions[user.userName],user.comments[rnd.Next(0, user.comments.Count)], url);
-                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 5)); //~10 comments/user at 100 users
+                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 5)); //~10 comments/user at 200 posts (~100 users)
                     if (currentIndex >= userPostIDs.Count) break;
                 }
 
@@ -204,6 +204,7 @@ namespace socialmediadatagenerator {
             Invoke(new Action(() => {
                 nameLabel.Text = $"Registration complete! Registered {usersToRegister.Count} users.";
                 usersToRegister.Clear();
+                progressBar1.Value = 0;
             }));
         }
     }
