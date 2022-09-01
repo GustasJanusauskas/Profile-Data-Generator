@@ -46,6 +46,7 @@ namespace socialmediadatagenerator
             this.previewListView = new System.Windows.Forms.ListView();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.generationGroup = new System.Windows.Forms.GroupBox();
+            this.pregenProfileImgBox = new System.Windows.Forms.CheckBox();
             this.pregenPostsBox = new System.Windows.Forms.CheckBox();
             this.pregenDescBox = new System.Windows.Forms.CheckBox();
             this.generateBar = new System.Windows.Forms.ProgressBar();
@@ -75,7 +76,6 @@ namespace socialmediadatagenerator
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialogJson = new System.Windows.Forms.OpenFileDialog();
-            this.pregenProfileImgBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
             this.nameBox.SuspendLayout();
@@ -283,6 +283,17 @@ namespace socialmediadatagenerator
             this.generationGroup.TabIndex = 4;
             this.generationGroup.TabStop = false;
             this.generationGroup.Text = "Identities";
+            // 
+            // pregenProfileImgBox
+            // 
+            this.pregenProfileImgBox.AutoSize = true;
+            this.pregenProfileImgBox.Location = new System.Drawing.Point(7, 77);
+            this.pregenProfileImgBox.Name = "pregenProfileImgBox";
+            this.pregenProfileImgBox.Size = new System.Drawing.Size(181, 17);
+            this.pregenProfileImgBox.TabIndex = 16;
+            this.pregenProfileImgBox.Text = "Use pre-generated profile images";
+            this.pregenProfileImgBox.UseVisualStyleBackColor = true;
+            this.pregenProfileImgBox.CheckedChanged += new System.EventHandler(this.pregenProfileImgBox_CheckedChanged);
             // 
             // pregenPostsBox
             // 
@@ -551,17 +562,6 @@ namespace socialmediadatagenerator
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.aboutToolStripMenuItem.Text = "About..";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // pregenProfileImgBox
-            // 
-            this.pregenProfileImgBox.AutoSize = true;
-            this.pregenProfileImgBox.Location = new System.Drawing.Point(7, 77);
-            this.pregenProfileImgBox.Name = "pregenProfileImgBox";
-            this.pregenProfileImgBox.Size = new System.Drawing.Size(181, 17);
-            this.pregenProfileImgBox.TabIndex = 16;
-            this.pregenProfileImgBox.Text = "Use pre-generated profile images";
-            this.pregenProfileImgBox.UseVisualStyleBackColor = true;
-            this.pregenProfileImgBox.CheckedChanged += new System.EventHandler(this.pregenProfileImgBox_CheckedChanged);
             // 
             // MainForm
             // 

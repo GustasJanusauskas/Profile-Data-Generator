@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.Json;
-using System.Json;
 
 namespace socialmediadatagenerator
 {
@@ -38,6 +37,8 @@ namespace socialmediadatagenerator
         public MainForm()
         {
             InitializeComponent();
+
+            this.Icon = Properties.Resources.Icon;
             Init();
         }
 
@@ -47,13 +48,6 @@ namespace socialmediadatagenerator
             #else
                 defaultDataDir = Path.GetFullPath(Directory.GetCurrentDirectory() + "\\defaultdata");
             #endif
-
-            //Count already generated faces so we can use them later
-            if (Directory.Exists("profile_images")) facesCount = Directory.GetFiles("profile_images\\").Length;
-            imagesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")).Length;
-            pregenMaleFacesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\male\\")).Length;
-            pregenFemaleFacesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\female\\")).Length;
-            pregenOtherFacesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\other\\")).Length;
 
             //Config elements
             openFileDialog1.Filter = "Text files|*.txt|Comma separated values|*.csv";
@@ -85,6 +79,14 @@ namespace socialmediadatagenerator
                 MessageBox.Show("Cannot find namelist directory, make sure a 'defaultdata' directory is in the same folder as executable, or use all custom namelists, including email and usernames.", "Missing namelists", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            //Count already generated faces so we can use them later
+            if (Directory.Exists("profile_images")) facesCount = Directory.GetFiles("profile_images\\").Length;
+            imagesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\images\\")).Length;
+            pregenMaleFacesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\male\\")).Length;
+            pregenFemaleFacesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\female\\")).Length;
+            pregenOtherFacesCount = Directory.GetFiles(Path.GetFullPath(defaultDataDir + "\\profile_images\\other\\")).Length;
+
             //Read default namelists
             foreach (var file in Directory.GetFiles(defaultDataDir)) {
                 if (new string[] { ".txt",".csv" }.Contains(Path.GetExtension(file))) ReadNameList(File.ReadAllText(file), Path.GetFileName(file).Replace(".txt", "").Replace(".csv",""),Path.GetExtension(file));

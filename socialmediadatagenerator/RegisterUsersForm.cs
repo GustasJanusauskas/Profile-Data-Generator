@@ -148,10 +148,10 @@ namespace socialmediadatagenerator {
                 }
 
                 //Like posts
-                currentIndex = rnd.Next(0,1 + (userPostIDs.Count / 25));
+                currentIndex = rnd.Next(0,1 + (userPostIDs.Count / 50));
                 while (true) {
                     await RegisterUsersAPI.LikePost(userPostIDs[currentIndex], userSessions[user.userName], url);
-                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 25)); //~40 likes/user at 200 posts (~100 users)
+                    currentIndex += rnd.Next(1, 2 + (userPostIDs.Count / 50)); //~66 likes/user at 200 posts (~100 users)
                     if (currentIndex >= userPostIDs.Count) break;
                 }
 

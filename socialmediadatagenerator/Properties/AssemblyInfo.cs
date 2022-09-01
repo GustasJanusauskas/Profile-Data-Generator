@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("socialmediadatagenerator")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Profile data generator")]
+[assembly: AssemblyDescription("Generates placeholder profile data")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("socialmediadatagenerator")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyCompany("Gustas Janušauskas")]
+[assembly: AssemblyProduct("Profile data generator")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
