@@ -38,7 +38,7 @@ namespace socialmediadatagenerator
             var request = new JsonObject();
             request.Add("model","text-davinci-002");
             request.Add("prompt", prompt);
-            request.Add("temperature",0.75);
+            request.Add("temperature",0.85);
             request.Add("max_tokens",maxtokens);
 
             HttpResponseMessage data = null;

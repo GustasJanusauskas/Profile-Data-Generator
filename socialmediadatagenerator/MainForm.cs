@@ -118,10 +118,29 @@ namespace socialmediadatagenerator
 
             //Get description
             if (pregenDescBox.Checked) {
+                //Pregen descriptions get extra processing
                 result.description = nameLists["description"][random.Next(0, nameLists["description"].Count)];
+                result.description = result.description.Replace("{name}",result.firstName);
+
+                if (result.gender == "male") {
+                    result.description = result.description.Replace("{HeShe}", "He");
+                    result.description = result.description.Replace("{heShe}", "he");
+                    result.description = result.description.Replace("{hisHer}", "his");
+                    result.description = result.description.Replace("{himHer}", "him");
+                    result.description = result.description.Replace("{manWoman}", "man");
+                    result.description = result.description.Replace("{fatherMother}", "father");
+                }
+                else {
+                    result.description = result.description.Replace("{HeShe}", "She");
+                    result.description = result.description.Replace("{heShe}", "she");
+                    result.description = result.description.Replace("{hisHer}", "her");
+                    result.description = result.description.Replace("{himHer}", "her");
+                    result.description = result.description.Replace("{manWoman}", "woman");
+                    result.description = result.description.Replace("{fatherMother}", "mother");
+                }
             }
             else {
-                result.description = "Write a profile description for a social media site:\n";
+                result.description = $"Write a profile description for { new string[] {"a young","a middle-aged","an old"}[random.Next(0,3)] } {(result.gender == "male" ? "man" : "woman")} named {result.firstName}:\n";
                 var descTask = RequestsAPI.GetOpenAIResponse(result.description, tokenBox.Text, 256);
                 result.description = await descTask;
             }
@@ -526,6 +545,17 @@ namespace socialmediadatagenerator
         private void pregenProfileImgBox_CheckedChanged(object sender, EventArgs e) {
             generateFacesBtn.Enabled = !pregenProfileImgBox.Checked;
             facesNumeric.Enabled = !pregenProfileImgBox.Checked;
+        }
+
+        private void previewListView_MouseDoubleClick(object sender, MouseEventArgs e) {
+        #if DEBUG
+            string result = "";
+            foreach (var user in generatedUsers) {
+                result += user.description.Trim().Replace("\n","\\n") + '\n';
+            }
+
+            File.WriteAllText("descriptionExport.txt",result);
+        #endif
         }
     }
 }

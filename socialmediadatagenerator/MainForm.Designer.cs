@@ -267,6 +267,7 @@ namespace socialmediadatagenerator
             this.previewListView.Size = new System.Drawing.Size(306, 355);
             this.previewListView.TabIndex = 12;
             this.previewListView.UseCompatibleStateImageBehavior = false;
+            this.previewListView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.previewListView_MouseDoubleClick);
             // 
             // generationGroup
             // 
