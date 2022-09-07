@@ -121,9 +121,9 @@ namespace socialmediadatagenerator
                 result.description = nameLists["description"][random.Next(0, nameLists["description"].Count)];
             }
             else {
-                result.description = descriptionPrompts[random.Next(0, descriptionPrompts.Length)];
+                result.description = "Write a profile description for a social media site:\n";
                 var descTask = RequestsAPI.GetOpenAIResponse(result.description, tokenBox.Text, 256);
-                result.description += await descTask;
+                result.description = await descTask;
             }
             //Add posts
             int total = random.Next(0, 6);
