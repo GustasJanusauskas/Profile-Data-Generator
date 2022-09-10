@@ -28,6 +28,23 @@ namespace socialmediadatagenerator
             }
         }
 
+        public static async Task SaveSamplePicture(int index) {
+            if (!Directory.Exists("sample_images")) Directory.CreateDirectory("sample_images");
+
+            //Pad with zeroes
+            string strIndex = index.ToString();
+            while (strIndex.Length < 10) strIndex = "0" + strIndex;
+
+            //Headers
+            client.DefaultRequestHeaders.Clear();
+
+            var task = client.GetStreamAsync($"https://cdn.vv42.net/file/art42-cdn/cubism/seed_{ strIndex }.jpg");
+            var result = await task;
+            using (var fileStream = new FileStream($"sample_images\\{strIndex}.jpg", FileMode.Create)) {
+                result.CopyTo(fileStream);
+            }
+        }
+
         public static async Task<string> GetOpenAIResponse(string prompt,string token, int maxtokens = 512) {
             if (token.Length < 51) return null;
             //Headers

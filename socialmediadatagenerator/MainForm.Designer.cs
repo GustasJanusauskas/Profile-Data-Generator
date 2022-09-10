@@ -76,6 +76,11 @@ namespace socialmediadatagenerator
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialogJson = new System.Windows.Forms.OpenFileDialog();
+            this.generationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateSampleImagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imagesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.imagesToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.facesNumeric)).BeginInit();
             this.faceGroup.SuspendLayout();
             this.nameBox.SuspendLayout();
@@ -519,6 +524,7 @@ namespace socialmediadatagenerator
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.generationToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -563,6 +569,45 @@ namespace socialmediadatagenerator
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.aboutToolStripMenuItem.Text = "About..";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // generationToolStripMenuItem
+            // 
+            this.generationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generateSampleImagesToolStripMenuItem});
+            this.generationToolStripMenuItem.Name = "generationToolStripMenuItem";
+            this.generationToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
+            this.generationToolStripMenuItem.Text = "Generation";
+            // 
+            // generateSampleImagesToolStripMenuItem
+            // 
+            this.generateSampleImagesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.imagesToolStripMenuItem,
+            this.imagesToolStripMenuItem1,
+            this.imagesToolStripMenuItem2});
+            this.generateSampleImagesToolStripMenuItem.Name = "generateSampleImagesToolStripMenuItem";
+            this.generateSampleImagesToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.generateSampleImagesToolStripMenuItem.Text = "Generate sample images..";
+            // 
+            // imagesToolStripMenuItem
+            // 
+            this.imagesToolStripMenuItem.Name = "imagesToolStripMenuItem";
+            this.imagesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imagesToolStripMenuItem.Text = "50 images";
+            this.imagesToolStripMenuItem.Click += new System.EventHandler(this.imagesToolStripMenuItem_Click);
+            // 
+            // imagesToolStripMenuItem1
+            // 
+            this.imagesToolStripMenuItem1.Name = "imagesToolStripMenuItem1";
+            this.imagesToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.imagesToolStripMenuItem1.Text = "100 images";
+            this.imagesToolStripMenuItem1.Click += new System.EventHandler(this.imagesToolStripMenuItem1_Click);
+            // 
+            // imagesToolStripMenuItem2
+            // 
+            this.imagesToolStripMenuItem2.Name = "imagesToolStripMenuItem2";
+            this.imagesToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.imagesToolStripMenuItem2.Text = "250 images";
+            this.imagesToolStripMenuItem2.Click += new System.EventHandler(this.imagesToolStripMenuItem2_Click);
             // 
             // MainForm
             // 
@@ -653,6 +698,11 @@ namespace socialmediadatagenerator
         private System.Windows.Forms.ToolStripMenuItem importFromJsonToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialogJson;
         private System.Windows.Forms.CheckBox pregenProfileImgBox;
+        private System.Windows.Forms.ToolStripMenuItem generationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateSampleImagesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem imagesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem imagesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem imagesToolStripMenuItem2;
     }
 }
 

@@ -34,6 +34,8 @@ namespace socialmediadatagenerator
 
         string defaultDataDir;
 
+        bool mainBarBusy;
+
         public MainForm()
         {
             InitializeComponent();
@@ -335,6 +337,34 @@ namespace socialmediadatagenerator
             return JsonSerializer.Deserialize<List<Post>>(rawStr);
         }
 
+        private async Task GenerateSampleImages(int amount) {
+            if (mainBarBusy) {
+                MessageBox.Show("Program busy, please wait until the current task is finished before starting a new one.", "Program busy", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int startingIndex = random.Next(0,10000);
+
+            Invoke(new Action(() => {
+                mainBarBusy = true;
+                mainTaskLabel.Text = "Generating sample images...";
+                mainProgBar.Maximum = amount;
+                mainProgBar.Value = 0;
+            }));
+
+            for (int i = startingIndex; i < startingIndex + amount; i++) {
+                await RequestsAPI.SaveSamplePicture(i);
+                Invoke(new Action(() => {
+                    mainProgBar.Value++;
+                }));
+            }
+
+            Invoke(new Action(() => {
+                mainBarBusy = false;
+                mainTaskLabel.Text = "Done!";
+            }));
+        }
+
         private void generateFacesBtn_Click(object sender, EventArgs e) {
             int times = (int)facesNumeric.Value;
             facesBar.Value = 0;
@@ -433,12 +463,12 @@ namespace socialmediadatagenerator
                 return;
             }
 
-            generateBar.Value = 0;
-            generateBar.Maximum = total;
-
             Task<Identity> task;
             Identity temp;
-            mainTaskLabel.Text = "Generating user info...";
+            Invoke(new Action(() => {
+                generateBar.Value = 0;
+                generateBar.Maximum = total;
+            }));
             for (int i = 0; i < total; i++) {
                 task = GenerateIdentity();
                 temp = await task;
@@ -449,11 +479,17 @@ namespace socialmediadatagenerator
                 }));
             }
             UpdatePreviewList();
-            generateBar.Value = 0;
-            mainTaskLabel.Text = "Done!";
+
+            Invoke(new Action(() => {
+                generateBar.Value = 0;
+            }));
         }
 
         private async void genPostsBtn_Click(object sender, EventArgs e) {
+            if (mainBarBusy) {
+                MessageBox.Show("Program busy, please wait until the current task is finished before starting a new one.", "Program busy", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (tokenBox.Text.Length < 51) {
                 MessageBox.Show("Please enter your openAI token first.","Missing openAI token",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 return;
@@ -464,7 +500,10 @@ namespace socialmediadatagenerator
             }
 
             //Generate posts
-            mainTaskLabel.Text = "Generating user posts...";
+            Invoke(new Action(() => {
+                mainBarBusy = true;
+                mainTaskLabel.Text = "Generating user posts...";
+            }));
             var newPosts = await GeneratePosts((int)genPostsNumeric.Value,mainProgBar);
             Invoke(new Action(() => {
                 lastRedditPostName = newPosts.lastPromptName;
@@ -472,8 +511,12 @@ namespace socialmediadatagenerator
                     generatedPosts.Add(newPosts.posts[i]);
                 }
             }));
-            mainProgBar.Value = 0;
-            mainTaskLabel.Text = "Done!";
+
+            Invoke(new Action(() => {
+                mainProgBar.Value = 0;
+                mainBarBusy = false;
+                mainTaskLabel.Text = "Done!";
+            }));
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
@@ -556,6 +599,18 @@ namespace socialmediadatagenerator
 
             File.WriteAllText("descriptionExport.txt",result);
         #endif
+        }
+
+        private void imagesToolStripMenuItem_Click(object sender, EventArgs e) {
+            GenerateSampleImages(50);
+        }
+
+        private void imagesToolStripMenuItem1_Click(object sender, EventArgs e) {
+            GenerateSampleImages(100);
+        }
+
+        private void imagesToolStripMenuItem2_Click(object sender, EventArgs e) {
+            GenerateSampleImages(250);
         }
     }
 }
