@@ -8,4 +8,4 @@
 - Post likes
 
 The app can export the data into files.
-It is also designed to work with the social media site webapp (found here https://gitlab.com/GustasJanusauskas/social-media-site).
+It is also designed to work with the social media site webapp (found here https://github.com/GustasJanusauskas/Social-Media-Site).
