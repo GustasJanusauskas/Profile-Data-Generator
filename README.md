@@ -9,6 +9,3 @@
 
 The app can export the data into files.
 It is also designed to work with the social media site webapp (found here https://gitlab.com/GustasJanusauskas/social-media-site).
-
-# Release
-Download the latest release build at: https://gitlab.com/GustasJanusauskas/social-media-data-generator/-/releases/
